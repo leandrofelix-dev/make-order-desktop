@@ -6,10 +6,15 @@ import Image from 'next/image'
 export default function HomePage() {
   return (
     <React.Fragment>
+      <div className='mt-4 bg-red-600'>
       <Head>
         <title>Home</title>
         <p>Tela inicial</p>
       </Head>
+      <Link href="/next">
+          <a className="btn-blue">Go to next page</a>
+        </Link>
+      </div>
     </React.Fragment>
   )
 }
