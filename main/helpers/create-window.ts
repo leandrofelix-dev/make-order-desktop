@@ -8,9 +8,8 @@ import Store from 'electron-store'
 
 export const createWindow = (
   windowName: string,
-  options: BrowserWindowConstructorOptions
+  options: BrowserWindowConstructorOptions,
 ): BrowserWindow => {
-  
   const key = 'window-state'
   const name = `window-state-${windowName}`
   const store = new Store<Rectangle>({ name })
@@ -74,7 +73,7 @@ export const createWindow = (
   const win = new BrowserWindow({
     ...state,
     ...options,
-    titleBarStyle: 'hidden',
+    titleBarStyle: 'default',
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -83,6 +82,7 @@ export const createWindow = (
   })
 
   win.on('close', saveState)
+  win.setMovable(true)
 
   return win
 }
