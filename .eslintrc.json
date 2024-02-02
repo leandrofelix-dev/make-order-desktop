@@ -2,7 +2,6 @@
   "overrides": [
     {
       "files": ["renderer/components/**/*.tsx"]
-      // Adicione suas regras específicas aqui
     }
   ]
 }
