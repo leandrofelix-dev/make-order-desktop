@@ -13,7 +13,7 @@ function Button({ variant, action, children }: ButtonProps) {
 
   return (
     <button
-      className={`${bg} ${color} font-bold rounded-md p-2 pointer h-12 w-full flex items-center justify-center gap-2`}
+      className={`${bg} ${color} bg-opacity-90 font-bold rounded-md p-2 pointer h-10 w-full flex items-center justify-center gap-2 hover:bg-opacity-100 text-sm`}
       onClick={action}
     >
       {children}
