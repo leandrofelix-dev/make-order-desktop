@@ -4,7 +4,7 @@ interface HeadingThreeProps {
 
 function HeadingThree ({children}: HeadingThreeProps) {
   return (
-    <h2 className="text-xl font-semibold text-slate_900">
+    <h2 className="text-xl font-bold text-slate_900">
       {children}
     </h2>
   )
