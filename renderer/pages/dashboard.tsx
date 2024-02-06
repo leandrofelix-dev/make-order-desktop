@@ -10,54 +10,72 @@ import { HeadingTwo } from '../components/atoms/heading-two';
 import { MenuItem } from '../components/molecules/menu-item';
 import { menu } from '../mocks/data';
 import { HeadingThree } from '../components/atoms/heading-three';
+import { Profile } from '../components/molecules/profile';
+import { ProfileCard } from '../components/molecules/profile_card';
+import { HeadingFour } from '../components/atoms/heading-four';
 
 export default function HomePage() {
   return (
     <>
       <View>
-      <NavBar />
-      <section className='flex items-center justify-between'>
-        <HeadingOne>Dashboard</HeadingOne>
-        <div className="w-64">
-          <Button variant="primary" action={() => alert('relatório gerado')}>
-            Gerar relatório
-            <IoMdDownload size={22}/>
-          </Button>
-        </div>
-      </section>
-      <section className='flex gap-4 items-start justify-between'>
-      <Card>
-        <div className='flex items-center justify-between'>
-          <HeadingTwo>Cardápio de hoje</HeadingTwo>
-          <div className="w-40">
-            <Button variant="primary" action={() => alert('item registrado')}>
-              <FaPlusCircle />
-              Registrar item
+        <NavBar />
+        <section className='flex items-center justify-between'>
+          <HeadingOne>Dashboard</HeadingOne>
+          <div className="w-64">
+            <Button variant="primary" action={() => alert('relatório gerado')}>
+              Gerar relatório
+              <IoMdDownload size={22} />
             </Button>
           </div>
-        </div>
-        <section className='my-4'>
-          <div className='font-semibold flex mb-2'>
-            <div className='w-[calc(50%+16px)]'>
-              <span>Item</span>
-            </div>
-            <div>
-              <span>Ingredientes</span>
-            </div>
-          </div>
-          {
-            menu.map((prato) => (
-              <MenuItem prato={prato.nome} ingredientes={prato.descricao} />
-            ))
-          }
-        
         </section>
-      </Card>
-      <Card>
-        <HeadingThree>Top atendentes</HeadingThree>
-      </Card>
-      </section>
-          
+        <section className='flex gap-4 items-start justify-between'>
+          <Card>
+            <div className='flex items-center justify-between'>
+              <HeadingTwo>Cardápio de hoje</HeadingTwo>
+              <div className="w-40">
+                <Button variant="primary" action={() => alert('item registrado')}>
+                  <FaPlusCircle />
+                  Registrar item
+                </Button>
+              </div>
+            </div>
+            <section className='my-4'>
+              <div className='font-semibold flex mb-2'>
+                <div className='w-[calc(50%+16px)]'>
+                  <span>Item</span>
+                </div>
+                <div>
+                  <span>Ingredientes</span>
+                </div>
+              </div>
+              {
+                menu.map((prato) => (
+                  <MenuItem prato={prato.nome} ingredientes={prato.descricao} />
+                ))
+              }
+
+            </section>
+          </Card>
+          <section>
+            
+            <Card>
+              <HeadingThree>Top atendentes</HeadingThree>
+              <ProfileCard name={"Amanda Souza"} role={"Creative Director"}></ProfileCard>
+              <ProfileCard name={"Leandro Félix"} role={"Creative Director"}></ProfileCard>
+              <ProfileCard name={"Bruno Oliveira"} role={"Creative Director"}></ProfileCard>
+            </Card>
+
+            <Card>
+              <div>
+                <HeadingFour>Pratos mais vendidos</HeadingFour>
+                <ProfileCard name={"Amanda Souza"} role={"Creative Director"}></ProfileCard>
+                <ProfileCard name={"Leandro Félix"} role={"Creative Director"}></ProfileCard>
+                <ProfileCard name={"Bruno Oliveira"} role={"Creative Director"}></ProfileCard>
+              </div>
+            </Card>
+          </section>
+        </section>
+
       </View>
     </>
   )
