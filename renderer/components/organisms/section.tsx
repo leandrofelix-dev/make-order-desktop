@@ -4,7 +4,7 @@ interface SectionProps {
 
 function Section ({children}: SectionProps) {
     return (
-        <section className="my-4">
+        <section className="my-4 flex gap-4">
             {children}
         </section>
     )
