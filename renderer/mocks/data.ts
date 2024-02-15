@@ -60,7 +60,7 @@ const menu = [
         nome: "Burrito Vegetariano",
         descricao: "Burrito recheado com feijão preto, arroz, legumes, queijo e guacamole.",
         quantidade: 2
-    }
+    },
 ];
 
 export { menu }
