@@ -4,6 +4,7 @@ import { Button } from "../components/atoms/button";
 import { View } from "../components/organisms/view";
 import { NavBar } from "../components/organisms/navbar";
 import { HeadingOne } from "../components/atoms/heading-one";
+import { SearchBar } from "../components/atoms/search-bar";
 
 export default function Lista() {
   return (
@@ -13,13 +14,7 @@ export default function Lista() {
         <div className="flex items-center justify-between">
           <HeadingOne>Lista de pedidos</HeadingOne>
               <div className="w-64">
-                <Button
-                  variant="primary"
-                  action={() => alert("relatório gerado")}
-                >
-                  Gerar relatório
-                  <IoMdDownload size={22} />
-                </Button>
+                <SearchBar />
               </div>
         </div>
       </View>
