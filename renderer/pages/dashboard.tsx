@@ -23,15 +23,15 @@ export default function HomePage() {
         <NavBar />
         <div className="flex items-center justify-between">
           <HeadingOne>Dashboard</HeadingOne>
-              <div className="w-64">
-                <Button
-                  variant="primary"
-                  action={() => alert("relatório gerado")}
-                >
-                  Gerar relatório
-                  <IoMdDownload size={22} />
-                </Button>
-              </div>
+          <div className="w-64">
+            <Button
+              variant="primary"
+              action={() => alert("relatório gerado")}
+            >
+              Gerar relatório
+              <IoMdDownload size={22} />
+            </Button>
+          </div>
         </div>
         <Section>
           <Card>

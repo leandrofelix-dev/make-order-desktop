@@ -63,4 +63,17 @@ const menu = [
     },
 ];
 
-export { menu }
+const pedido = [
+
+    {
+        id: randomUUID,
+        item: "Burrito Vegetariano",
+        atendente: "Amanda Souza",
+        data: "03/02/2024",
+        codigo: "111",
+        preco: "R$ 10,00",
+        mesa:"1",
+        observacao: "Burrito recheado com feijão preto"
+    }
+]
+export { menu, pedido }
