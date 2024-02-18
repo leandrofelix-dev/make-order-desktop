@@ -14,6 +14,7 @@ import { ProfileCard } from "../components/molecules/profile_card";
 import { HeadingFour } from "../components/atoms/heading-four";
 import { Section } from "../components/organisms/section";
 import { Box } from "../components/organisms/box";
+import { BestDishes } from "../components/molecules/best-dishes";
 
 export default function HomePage() {
   return (
@@ -78,18 +79,18 @@ export default function HomePage() {
             </Card>
             <Card>
               <HeadingFour>Pratos mais vendidos</HeadingFour>
-              <ProfileCard
-                name={"Amanda Souza"}
-                role={"Creative Director"}
-              ></ProfileCard>
-              <ProfileCard
-                name={"Leandro Félix"}
-                role={"Creative Director"}
-              ></ProfileCard>
-              <ProfileCard
-                name={"Bruno Oliveira"}
-                role={"Creative Director"}
-              ></ProfileCard>
+              <BestDishes
+                name={"Macarrão"}
+                role={"123 Pratos"}
+              ></BestDishes>
+              <BestDishes
+                name={"Arroz "}
+                role={"200 Pratos"}
+              ></BestDishes>
+              <BestDishes
+                name={"Lasanha"}
+                role={"300 Pratos"}
+              ></BestDishes>
             </Card>
           </Box>
         </Section>
