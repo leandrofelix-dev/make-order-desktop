@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoMdDownload } from "react-icons/io";
 import { Button } from "../components/atoms/button";
 import { View } from "../components/organisms/view";
@@ -13,8 +13,20 @@ import { HeadingThree } from "../components/atoms/heading-three";
 import { HeadingFour } from "../components/atoms/heading-four";
 import { OrderItem } from "../components/molecules/order-item ";
 import { pedido } from "../mocks/data";
+import { RegisterModal } from "../components/molecules/register-modal";
 
 export default function Lista() {
+
+  const [openRegisterModal, setOpenRegisterModal] = useState(false)
+
+  const handleOpenModal = () => {
+    setOpenRegisterModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenRegisterModal(false);
+  };
+
   return (
     <>
       <View>
@@ -30,11 +42,14 @@ export default function Lista() {
           <div className="w-64">
             <Button
               variant="primary"
-              action={() => alert("pedido registrado")}
+              action={handleOpenModal}
             >
               <FaPlusCircle />
               Registrar pedido
             </Button>
+            {openRegisterModal && (
+              <RegisterModal title="Registrar pedido" isOpen={openRegisterModal} onClose={handleCloseModal} apiURL="https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/pedidos/create" />
+            )}
           </div>
         </div>
         <Section>
@@ -48,9 +63,9 @@ export default function Lista() {
               <span>Mesa</span>
               <span>Observação</span>
             </div>
-              {pedido.map((item) => (
-                <OrderItem item={item.item} atendente={item.atendente} data={item.data} codigo={item.codigo} preco={item.preco} mesa={item.mesa} observacao={item.observacao}></OrderItem>
-              ))}
+            {pedido.map((item) => (
+              <OrderItem item={item.item} atendente={item.atendente} data={item.data} codigo={item.codigo} preco={item.preco} mesa={item.mesa} observacao={item.observacao}></OrderItem>
+            ))}
           </Card>
         </Section>
       </View>
