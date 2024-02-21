@@ -21,14 +21,13 @@ import { RegisterModal } from "../components/molecules/register-modal";
 export default function HomePage() {
 
   const [openModal, setOpenModal] = useState(false)
-  const [openRegisterModal, setOpenRegisterModal] = useState(false)
 
   const handleOpenModal = () => {
-    setOpenRegisterModal(true);
+    setOpenModal(true);
   };
 
   const handleCloseModal = () => {
-    setOpenRegisterModal(false);
+    setOpenModal(false);
   };
 
 
@@ -61,8 +60,8 @@ export default function HomePage() {
                   Registrar item
                 </Button>
 
-                {openRegisterModal && (
-                  <RegisterModal title="Registrar Item" isOpen={openRegisterModal} onClose={handleCloseModal} apiURL="https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/itens/create" />
+                {openModal && (
+                  <RegisterModal title="Registrar Item" isOpen={openModal} onClose={handleCloseModal} apiURL="https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/itens/create" />
                 )}
 
               </div>

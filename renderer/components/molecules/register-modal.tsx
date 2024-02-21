@@ -4,9 +4,7 @@ import { useState } from 'react';
 import { Button } from '../atoms/button';
 import { HeadingOne } from '../atoms/heading-one';
 
-
 interface RegisterModalProps {
-
   isOpen: boolean;
   onClose: () => void;
   apiURL: string;
@@ -20,7 +18,7 @@ interface Item {
   descricao: string;
 }
 
-const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose, apiURL, title }) => {
+function RegisterModal({ isOpen, onClose, apiURL, title }: RegisterModalProps) {
   const [item, setItem] = useState<Item>({
     nome: '',
     preco: 0,
@@ -36,7 +34,7 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose, apiURL, 
     }))
   };
 
-  const handleAddItem = async () => {
+  async function handleAddItem() {
     try {
       // Substitua a URL abaixo pela sua API
       const response = await axios.post(apiURL, item);
@@ -50,7 +48,8 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose, apiURL, 
       // Lógica de tratamento de erro (ex: exibir mensagem de erro)
       console.error('Erro ao registrar item:', error);
     }
-  };
+  }
+
   return (
     <div className={`modal ${isOpen ? 'open' : ''}`}>
       <div className="fixed inset-0 flex items-center justify-center z-10">
@@ -63,12 +62,9 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose, apiURL, 
 
           <div className="ml-8 mr-8">
             <label className="font-semibold flex mb-2">Item</label>
-            <input className="bg-slate_50 border-2 border-slate_200
-          h-8  text-sm placeholder:text-slate_500 w-full" type="text" name="nome" value={item.nome} onChange={handleInputChange} />
-
+            <input className="bg-slate_50 border-2 border-slate_200 h-8  text-sm placeholder:text-slate_500 w-full" type="text" name="nome" value={item.nome} onChange={handleInputChange} />
 
             <div className="flex justify-between">
-
               <div>
                 <label className="font-semibold flex mb-2">Preço</label>
                 <input
@@ -76,31 +72,27 @@ const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose, apiURL, 
                   type="number"
                   name="preco"
                   value={item.preco}
-                  onChange={handleInputChange} />
+                  onChange={handleInputChange}
+                />
               </div>
 
               <div>
                 <label className="font-semibold flex mb-2">Quantidade</label>
-                <input className="bg-slate_50 border-2 border-slate_200
-          h-8  text-sm placeholder:text-slate_500" type="number" name="quantidade" value={item.quantidade} onChange={handleInputChange} />
+                <input className="bg-slate_50 border-2 border-slate_200 h-8  text-sm placeholder:text-slate_500" type="number" name="quantidade" value={item.quantidade} onChange={handleInputChange} />
               </div>
-
             </div>
 
             <label className="font-semibold flex mb-2">Observações</label>
-            <input className="bg-slate_50 border-2 border-slate_200
-        text-sm placeholder:text-slate_500 w-full h-10" type="text" name="descricao" value={item.descricao} onChange={handleInputChange} />
-            <Button
-              variant="primary"
-              action={handleAddItem}
-            >
+            <input className="bg-slate_50 border-2 border-slate_200 text-sm placeholder:text-slate_500 w-full h-10" type="text" name="descricao" value={item.descricao} onChange={handleInputChange} />
+
+            <Button variant="primary" action={handleAddItem}>
               Registrar
             </Button>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export { RegisterModal }
+export { RegisterModal };
