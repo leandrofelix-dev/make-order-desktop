@@ -3,11 +3,13 @@ import Image from "next/image"
 interface ProfileProps {
   name: string
   role: string
+  action: () => void
 }
 
-function Profile ({ name, role }: ProfileProps) {
+function Profile({ name, role, action }: ProfileProps) {
+
   return (
-    <div className="flex items-center gap-3 cursor-pointer hover:bg-slate_200">
+    <div className="flex items-center gap-3 cursor-pointer hover:bg-slate_200" onClick={action}>
       <div>
         <p className="text-slate_900 text-lg font-bold">{name}</p>
         <p className="text-slate_500 text-sm font-semibold">{role}</p>

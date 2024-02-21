@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoMdDownload } from "react-icons/io";
 import { FaPlusCircle } from "react-icons/fa";
 import { Button } from "../components/atoms/button";
@@ -15,23 +15,37 @@ import { HeadingFour } from "../components/atoms/heading-four";
 import { Section } from "../components/organisms/section";
 import { Box } from "../components/organisms/box";
 import { BestDishes } from "../components/molecules/best-dishes";
+import { EditModal } from "../components/molecules/edit-modal";
+import { RegisterModal } from "../components/molecules/register-modal";
 
 export default function HomePage() {
+
+  const [openModal, setOpenModal] = useState(false)
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+
   return (
     <>
       <View>
         <NavBar />
         <div className="flex items-center justify-between">
           <HeadingOne>Dashboard</HeadingOne>
-              <div className="w-64">
-                <Button
-                  variant="primary"
-                  action={() => alert("relatório gerado")}
-                >
-                  Gerar relatório
-                  <IoMdDownload size={22} />
-                </Button>
-              </div>
+          <div className="w-64">
+            <Button
+              variant="primary"
+              action={() => alert("relatório gerado")}
+            >
+              Gerar relatório
+              <IoMdDownload size={22} />
+            </Button>
+          </div>
         </div>
         <Section>
           <Card>
@@ -40,11 +54,16 @@ export default function HomePage() {
               <div className="w-40">
                 <Button
                   variant="primary"
-                  action={() => alert("item registrado")}
+                  action={handleOpenModal}
                 >
                   <FaPlusCircle />
                   Registrar item
                 </Button>
+
+                {openModal && (
+                  <RegisterModal title="Registrar Item" isOpen={openModal} onClose={handleCloseModal} apiURL="https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/itens/create" />
+                )}
+
               </div>
             </div>
             <div>
