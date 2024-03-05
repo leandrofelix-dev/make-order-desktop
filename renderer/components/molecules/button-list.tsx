@@ -1,8 +1,6 @@
-import { ButtonItem } from "../atoms/button-item";
+import { ButtonItem } from '../atoms/button-item'
 
-
-
-function ButtonList() {
+function ButtonList () {
   return (
     <div className="flex items-center justify-between gap-4" >
       <ButtonItem label="Aguardando confirmação" href="/lista" />

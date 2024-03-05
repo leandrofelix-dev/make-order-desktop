@@ -1,23 +1,22 @@
-import Link from "next/link";
-import Image from "next/image";
-import Logo from '../../public/images/logo.svg';
-import { Profile } from "../molecules/profile";
-import { NavList } from "../molecules/nav-list";
-import { Separator } from "../atoms/separator";
-import { useState } from "react";
-import { ProfileModal } from "../molecules/profile-modal";
+import Link from 'next/link'
+import Image from 'next/image'
+import Logo from '../../public/images/logo.svg'
+import { Profile } from '../molecules/profile'
+import { NavList } from '../molecules/nav-list'
+import { Separator } from '../atoms/separator'
+import { useState } from 'react'
+import { ProfileModal } from '../molecules/profile-modal'
 
-function NavBar() {
+function NavBar () {
   const [openModal, setOpenModal] = useState(false)
 
   const handleOpenModal = () => {
-    setOpenModal(true);
-  };
+    setOpenModal(true)
+  }
 
   const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
+    setOpenModal(false)
+  }
 
   return (
     <>
@@ -29,7 +28,7 @@ function NavBar() {
           <NavList />
         </div>
         <div>
-          <Profile name={"Jhon Doe"} role={"Atendente"} action={handleOpenModal} />
+          <Profile name={'Jhon Doe'} role={'Atendente'} action={handleOpenModal} />
           {openModal && (
             <ProfileModal isOpen={openModal} onClose={handleCloseModal} />
           )}
@@ -37,7 +36,7 @@ function NavBar() {
       </nav>
       <Separator />
     </>
-  );
+  )
 }
 
-export { NavBar };
+export { NavBar }

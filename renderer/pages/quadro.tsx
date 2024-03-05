@@ -1,11 +1,11 @@
-import { HeadingOne } from "../components/atoms/heading-one";
-import { SearchBar } from "../components/atoms/search-bar";
-import { KBCard } from "../components/organisms/kb-card";
-import { NavBar } from "../components/organisms/navbar";
-import { Section } from "../components/organisms/section";
-import { View } from "../components/organisms/view";
+import { HeadingOne } from '../components/atoms/heading-one'
+import { SearchBar } from '../components/atoms/search-bar'
+import { KBCard } from '../components/organisms/kb-card'
+import { NavBar } from '../components/organisms/navbar'
+import { Section } from '../components/organisms/section'
+import { View } from '../components/organisms/view'
 
-export default function Quadro() {
+export default function Quadro () {
   return (
     <View>
       <NavBar />
@@ -66,5 +66,5 @@ export default function Quadro() {
           </div>
         </Section>
     </View>
-  );
+  )
 }

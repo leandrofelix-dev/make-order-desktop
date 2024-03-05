@@ -1,5 +1,10 @@
 {
   "eslint.workingDirectories": [
     "./renderer"
+  ],
+  "cSpell.words": [
+    "corejs",
+    "nextron",
+    "semistandard"
   ]
 }

@@ -1,7 +1,3 @@
-import { IoMdDownload } from "react-icons/io";
-import { Button } from "../atoms/button";
-import { HeadingOne } from "../atoms/heading-one";
-
 interface BoxProps {
   children: React.ReactNode
 }

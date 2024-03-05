@@ -1,5 +1,5 @@
-import Link from "next/link"
-import { IconType } from "react-icons"
+import Link from 'next/link'
+import { IconType } from 'react-icons'
 
 interface NavItemProps {
   label: string
@@ -13,9 +13,9 @@ function NavItem ({
   href
 }: NavItemProps) {
 
-  const actualPath = typeof window !== "undefined" ? window.location.pathname : ""
-  const bg = actualPath.includes(href) ? "bg-primary text-slate_50" : "bg-slate_100 text-slate_900"
-  const iconColor = actualPath.includes(href) ? "text-slate_50" : "text-primary"
+  const actualPath = typeof window !== 'undefined' ? window.location.pathname : ''
+  const bg = actualPath.includes(href) ? 'bg-primary text-slate_50' : 'bg-slate_100 text-slate_900'
+  const iconColor = actualPath.includes(href) ? 'text-slate_50' : 'text-primary'
   
   return (
     <Link href={href}>

@@ -1,35 +1,30 @@
-import React, { useState } from "react";
-import { IoMdDownload } from "react-icons/io";
-import { FaPlusCircle } from "react-icons/fa";
-import { Button } from "../components/atoms/button";
-import { View } from "../components/organisms/view";
-import { NavBar } from "../components/organisms/navbar";
-import { Card } from "../components/organisms/card";
-import { HeadingOne } from "../components/atoms/heading-one";
-import { HeadingTwo } from "../components/atoms/heading-two";
-import { MenuItem } from "../components/molecules/menu-item";
-import { menu } from "../mocks/data";
-import { HeadingThree } from "../components/atoms/heading-three";
-import { ProfileCard } from "../components/molecules/profile_card";
-import { HeadingFour } from "../components/atoms/heading-four";
-import { Section } from "../components/organisms/section";
-import { Box } from "../components/organisms/box";
-import { BestDishes } from "../components/molecules/best-dishes";
-import { EditModal } from "../components/molecules/edit-modal";
-import { RegisterModal } from "../components/molecules/register-modal";
+import React, { useState } from 'react'
+import { IoMdDownload } from 'react-icons/io'
+import { FaPlusCircle } from 'react-icons/fa'
+import { Button } from '../components/atoms/button'
+import { View } from '../components/organisms/view'
+import { NavBar } from '../components/organisms/navbar'
+import { Card } from '../components/organisms/card'
+import { HeadingOne } from '../components/atoms/heading-one'
+import { HeadingTwo } from '../components/atoms/heading-two'
+import { MenuItem } from '../components/molecules/menu-item'
+import { HeadingThree } from '../components/atoms/heading-three'
+import { ProfileCard } from '../components/molecules/profile_card'
+import { HeadingFour } from '../components/atoms/heading-four'
+import { Section } from '../components/organisms/section'
+import { Box } from '../components/organisms/box'
+import { BestDishes } from '../components/molecules/best-dishes'
+import { RegisterModal } from '../components/molecules/register-modal'
+import { menu } from '../mocks/data'
+import { checkToken } from '../actions/check-token'
 
-export default function HomePage() {
+checkToken()
 
-  const [openModal, setOpenModal] = useState(false)
+export default function HomePage () {
+  const [isOpenModal, setIsOpenModal] = useState(false)
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
+  const handleModalStateChange = () =>
+    isOpenModal ? setIsOpenModal(false) : setIsOpenModal(true)
 
   return (
     <>
@@ -38,10 +33,7 @@ export default function HomePage() {
         <div className="flex items-center justify-between">
           <HeadingOne>Dashboard</HeadingOne>
           <div className="w-64">
-            <Button
-              variant="primary"
-              action={() => alert("relatório gerado")}
-            >
+            <Button variant="primary" action={() => console.log('relatório gerado')}>
               Gerar relatório
               <IoMdDownload size={22} />
             </Button>
@@ -52,18 +44,19 @@ export default function HomePage() {
             <div className="flex items-center justify-between">
               <HeadingTwo>Cardápio de hoje</HeadingTwo>
               <div className="w-40">
-                <Button
-                  variant="primary"
-                  action={handleOpenModal}
-                >
+                <Button variant="primary" action={handleModalStateChange}>
                   <FaPlusCircle />
                   Registrar item
                 </Button>
 
-                {openModal && (
-                  <RegisterModal title="Registrar Item" isOpen={openModal} onClose={handleCloseModal} apiURL="https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/itens/create" />
+                {isOpenModal && (
+                  <RegisterModal
+                    title="Registrar Item"
+                    isOpen={isOpenModal}
+                    onClose={handleModalStateChange}
+                    apiURL="https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/itens/create"
+                  />
                 )}
-
               </div>
             </div>
             <div>
@@ -76,7 +69,7 @@ export default function HomePage() {
                 </div>
               </div>
               {menu.map((prato) => (
-                <MenuItem prato={prato.nome} ingredientes={prato.descricao} />
+                <MenuItem prato={prato.nome} ingredientes={prato.descricao} key={prato.nome}/>
               ))}
             </div>
           </Card>
@@ -84,36 +77,27 @@ export default function HomePage() {
             <Card>
               <HeadingThree>Top atendentes</HeadingThree>
               <ProfileCard
-                name={"Amanda Souza"}
-                role={"Creative Director"}
+                name={'Amanda Souza'}
+                role={'Creative Director'}
               ></ProfileCard>
               <ProfileCard
-                name={"Leandro Félix"}
-                role={"Creative Director"}
+                name={'Leandro Félix'}
+                role={'Creative Director'}
               ></ProfileCard>
               <ProfileCard
-                name={"Bruno Oliveira"}
-                role={"Creative Director"}
+                name={'Bruno Oliveira'}
+                role={'Creative Director'}
               ></ProfileCard>
             </Card>
             <Card>
               <HeadingFour>Pratos mais vendidos</HeadingFour>
-              <BestDishes
-                name={"Macarrão"}
-                role={"123 Pratos"}
-              ></BestDishes>
-              <BestDishes
-                name={"Arroz "}
-                role={"200 Pratos"}
-              ></BestDishes>
-              <BestDishes
-                name={"Lasanha"}
-                role={"300 Pratos"}
-              ></BestDishes>
+              <BestDishes name={'Macarrão'} role={'123 Pratos'}></BestDishes>
+              <BestDishes name={'Arroz '} role={'200 Pratos'}></BestDishes>
+              <BestDishes name={'Lasanha'} role={'300 Pratos'}></BestDishes>
             </Card>
           </Box>
         </Section>
       </View>
     </>
-  );
+  )
 }

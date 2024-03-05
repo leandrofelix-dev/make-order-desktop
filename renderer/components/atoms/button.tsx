@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 type variant = 'primary' | 'danger' | 'loading' | 'disabled'
 
 interface ButtonProps {
   variant: variant
-  action: () => void
+  action: (data: any) => void | Promise<void>
   children?: React.ReactNode
+  
 }
 
 function Button({ variant, action, children }: ButtonProps) {

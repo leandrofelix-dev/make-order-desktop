@@ -5,15 +5,15 @@ interface KBCardProps {
   id: string;
 }
 
-import Image from 'next/image';
-import { FaTrash } from 'react-icons/fa';
+import Image from 'next/image'
+import { FaTrash } from 'react-icons/fa'
 
 function KBCard({ title, descricao, mesa, id }: KBCardProps) {
   return (
     <div className="bg-slate_50 px-6 py-4 rounded-lg w-[300px] flex flex-col gap-2 shadow-md shadow-slate_200">
       <FaTrash 
         size={16}
-      className='transition-all ease-in-out text-slate_900 hover:text-danger/90 cursor-pointer' onClick={() => {alert('apagou')}}/>
+      className='transition-all ease-in-out text-slate_900 hover:text-danger/90 cursor-pointer' onClick={() => {console.log('apagou')}}/>
       <div className="flex items-center justify-between">
         <div>
           <p className="text-lg font-semibold text-slate_900">{title}</p>
@@ -26,9 +26,9 @@ function KBCard({ title, descricao, mesa, id }: KBCardProps) {
         <Tag title={id} />
       </div>
     </div>
-  );
+  )
 }
-export { KBCard };
+export { KBCard }
 
 
 function Tag ({title} : {title: string}) {

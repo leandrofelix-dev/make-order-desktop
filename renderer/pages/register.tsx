@@ -1,10 +1,10 @@
-import Link from "next/link";
-import { Button } from "../components/atoms/button";
-import { HeadingOne } from "../components/atoms/heading-one";
-import { NavBar } from "../components/organisms/navbar";
-import { View } from "../components/organisms/view";
+import Link from 'next/link'
+import { Button } from '../components/atoms/button'
+import { HeadingOne } from '../components/atoms/heading-one'
+import { NavBar } from '../components/organisms/navbar'
+import { View } from '../components/organisms/view'
 
-export default function Register() {
+export default function Register () {
   return (
     <>
       <View>
@@ -18,7 +18,7 @@ export default function Register() {
 
             <HeadingOne>Registrar-se</HeadingOne>
 
-            <div className="flex flex-col gap-3 text-slate_900 ml-8 mr-8">
+            <div className="flex flex-col gap-3 text-slate_900">
               <span>Email</span>
               <input className="bg-slate_50 h-8 text-sm placeholder:text-slate_500 w-full" type="text" />
 
@@ -36,7 +36,7 @@ export default function Register() {
 
               <Button
                 variant="primary"
-                action={() => alert("Usuário logado")}
+                action={() => console.log('Usuário logado')}
               >
                 Registrar-se
               </Button>

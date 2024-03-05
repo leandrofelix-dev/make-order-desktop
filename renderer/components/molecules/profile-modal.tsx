@@ -1,7 +1,7 @@
-import Link from "next/link"
+/* eslint-disable react/prop-types */
+import Link from 'next/link'
 
-function ProfileModal({ isOpen, onClose }) {
-
+function ProfileModal ({ isOpen, onClose }) {
   return (
     <div className={`modal ${isOpen ? 'open' : ''}`}>
       <div className="fixed inset-0 flex items-center justify-center z-10">
