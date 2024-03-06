@@ -1,9 +1,7 @@
 'use client'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Button } from '../atoms/button'
 import { FaDoorOpen } from 'react-icons/fa'
-import { useEffect, useState } from 'react'
 
 interface ProfileModalProps {
   isOpen: boolean;
@@ -11,23 +9,8 @@ interface ProfileModalProps {
   name: string;
   role: string;
 }
-async function getToken() {
-  const token = await global.localStorage.getItem('token')
-  console.log('token', token)
-}
-
-getToken()
 
 function ProfileModal({ isOpen, onClose, name, role }: ProfileModalProps) {
-
-  const [isLogged, setIsLogged] = useState(false)
-
-  // setIsLogged(true)
-  useEffect(() => {
-    setIsLogged(true)
-  }, [])
-
-
   return (
     <>
       {isOpen && (
@@ -38,8 +21,7 @@ function ProfileModal({ isOpen, onClose, name, role }: ProfileModalProps) {
           ></div>
           <div className="absolute p-4 rounded-xl bg-slate_100 right-32 top-28 w-full max-w-[320px] max-h-40 z-50 gap-4 flex flex-col">
             <div className="flex justify-between flex-col gap-4">
-              {isLogged ? (
-                <>
+            <>
                   <div className="flex items-center">
                     <div className="w-12 h-12 mr-4 overflow-hidden rounded-full">
                       <Image
@@ -66,18 +48,6 @@ function ProfileModal({ isOpen, onClose, name, role }: ProfileModalProps) {
                     </Button>
                   </div>
                 </>
-              ) : (
-                <div>
-                  <div className="flex gap-2">
-                    <Button variant={'primary'}>
-                      <Link href="/login">Faça o login</Link>
-                    </Button>
-                    <Button variant={'neutral'}>
-                      <Link href="/register">Registre-se</Link>
-                    </Button>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
