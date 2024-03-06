@@ -8,4 +8,6 @@ const http = axios.create({
   }
 })
 
-export { http }
+const apiURL = 'https://make-order-api-98b5f8f0c48a.herokuapp.com'
+
+export { http, apiURL }
