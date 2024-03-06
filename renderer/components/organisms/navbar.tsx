@@ -30,7 +30,7 @@ function NavBar () {
         <div>
           <Profile name={'Jhon Doe'} role={'Atendente'} action={handleOpenModal} />
           {openModal && (
-            <ProfileModal isOpen={openModal} onClose={handleCloseModal} />
+            <ProfileModal isOpen={openModal} onClose={handleCloseModal} name={'Jhon Doe'} role={'Atendente'}/>
           )}
         </div>
       </nav>

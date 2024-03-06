@@ -1,21 +1,38 @@
 /* eslint-disable no-unused-vars */
-type variant = 'primary' | 'danger' | 'loading' | 'disabled'
+type variant = 'primary' | 'danger' | 'neutral' | 'disabled'
 
 interface ButtonProps {
   variant: variant
-  action: (data: any) => void | Promise<void>
+  action?: (data: any) => void | Promise<void>
   children?: React.ReactNode
-  
 }
 
 function Button({ variant, action, children }: ButtonProps) {
-  const color =
-    variant === 'primary' || 'danger' ? 'text-slate_50' : 'text-slate-700'
-  const bg = variant === 'primary' || 'danger' ? 'bg-primary' : 'bg-danger'
+
+    let bg = ''
+    let text = ''
+
+    switch (variant) {
+      case 'primary':
+        bg = 'bg-primary'
+        text = 'text-slate_50'
+        break
+      case 'danger':
+        bg = 'bg-danger'
+        text = 'text-slate_50'
+        break
+        case 'neutral':
+          bg = 'border-2 border-primary hover:bg-primary/10'
+          text = 'text-primary'
+          break
+    
+      default:
+        break
+    }
 
   return (
     <button
-      className={`${bg} ${color} bg-opacity-90 font-bold rounded-md p-2 pointer h-10 w-full flex items-center justify-center gap-2 hover:bg-opacity-100 text-sm`}
+      className={`${bg} ${text} bg-opacity-90 font-bold rounded-md p-2 pointer h-10 w-full flex items-center justify-center gap-2 hover:bg-opacity-100 text-sm`}
       onClick={action}
     >
       {children}
