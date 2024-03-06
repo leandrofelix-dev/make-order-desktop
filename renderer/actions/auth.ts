@@ -16,7 +16,9 @@ async function authenticate(data: Login): Promise<void> {
         'Content-Type': 'application/json'
       }
     })
-    console.log(response.data.token)
+    global.localStorage.setItem('token', response.data.token)
+    global.location.href = '/dashboard'
+
   } catch (error) {
     console.log('Erro ao fazer login:', error)
   }

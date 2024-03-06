@@ -16,11 +16,10 @@ import { Box } from '../components/organisms/box'
 import { BestDishes } from '../components/molecules/best-dishes'
 import { RegisterModal } from '../components/molecules/register-modal'
 import { menu } from '../mocks/data'  
+import { checkToken } from '../actions/check-token'
 
 export default function HomePage () {
-  const token = global.localStorage.getItem('token')
-  if (token === '')
-    global.location.href = '/login'
+  checkToken()
 
   const [isOpenModal, setIsOpenModal] = useState(false)
 

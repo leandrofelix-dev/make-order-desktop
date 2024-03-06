@@ -1,3 +1,4 @@
+'use client'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '../atoms/button'
@@ -10,15 +11,22 @@ interface ProfileModalProps {
   name: string;
   role: string;
 }
+async function getToken() {
+  const token = await global.localStorage.getItem('token')
+  console.log('token', token)
+}
+
+getToken()
 
 function ProfileModal({ isOpen, onClose, name, role }: ProfileModalProps) {
+
   const [isLogged, setIsLogged] = useState(false)
 
-  const token = global.localStorage.getItem('token')
-
+  // setIsLogged(true)
   useEffect(() => {
-    if (token !== '') setIsLogged(true)
-  }, [token])
+    setIsLogged(true)
+  }, [])
+
 
   return (
     <>

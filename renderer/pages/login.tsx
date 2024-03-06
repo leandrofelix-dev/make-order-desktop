@@ -7,10 +7,20 @@ import { NavBar } from '../components/organisms/navbar'
 import { View } from '../components/organisms/view'
 import { authenticate } from '../actions/auth'
 
-
 export default function Login() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [loginData, setLoginData] = useState({ email: '', senha: '' })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setLoginData(prevState => ({
+      ...prevState,
+      [name]: value
+    }))
+  }
+
+  const handleSubmit = () =>
+    authenticate(loginData)
+
 
   return (
     <>
@@ -29,22 +39,21 @@ export default function Login() {
               <input
                 className="bg-slate_50 h-10 text-sm placeholder:text-slate_500 w-full px-4"
                 type="email"
-                value={email}
+                name="email"
+                value={loginData.email}
                 placeholder='seu-email@mail.com'
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleChange}
               />
               <span className='font-medium text-lg'>Senha</span>
               <input
                 className="bg-slate_50 h-10 text-sm placeholder:text-slate_500 w-full px-4"
                 type="password"
-                value={password}
+                name="senha"
+                value={loginData.senha}
                 placeholder='********'
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handleChange}
               />
-              <Button variant="primary" action={() => authenticate({
-                email,
-                senha: password,
-              })}>
+              <Button variant="primary" action={handleSubmit}>
                 Entrar
               </Button>
             </div>
