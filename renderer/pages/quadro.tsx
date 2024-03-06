@@ -1,3 +1,4 @@
+import { checkToken } from '../actions/check-token'
 import { HeadingOne } from '../components/atoms/heading-one'
 import { SearchBar } from '../components/atoms/search-bar'
 import { KBCard } from '../components/organisms/kb-card'
@@ -6,6 +7,7 @@ import { Section } from '../components/organisms/section'
 import { View } from '../components/organisms/view'
 
 export default function Quadro () {
+  checkToken()
   return (
     <View>
       <NavBar />

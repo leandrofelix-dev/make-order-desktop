@@ -11,8 +11,10 @@ import { FaPlusCircle } from 'react-icons/fa'
 import { OrderItem } from '../components/molecules/order-item '
 import { pedido } from '../mocks/data'
 import { RegisterModal } from '../components/molecules/register-modal'
+import { checkToken } from '../actions/check-token'
 
 export default function Lista() {
+  checkToken()
   const [openRegisterModal, setOpenRegisterModal] = useState(false)
 
   const handleOpenModal = () => {
