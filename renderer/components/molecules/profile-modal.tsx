@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Button } from '../atoms/button'
 import { FaDoorOpen } from 'react-icons/fa'
 
-const isLogged = false
+const isLogged = true
 
 interface ProfileModalProps {
   isOpen: boolean;

@@ -9,7 +9,7 @@ interface ProfileProps {
 function Profile({ name, role, action }: ProfileProps) {
 
   return (
-    <div className="flex items-center gap-3 cursor-pointer hover:bg-slate_200" onClick={action}>
+    <div className="flex items-center gap-3 cursor-pointer hover:bg-slate_700/5 p-2 rounded-md" onClick={action}>
       <div>
         <p className="text-slate_900 text-lg font-bold">{name}</p>
         <p className="text-slate_500 text-sm font-semibold">{role}</p>

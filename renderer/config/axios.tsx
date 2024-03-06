@@ -1,11 +1,15 @@
 import axios from 'axios'
+import 'dotenv/config'
 
+const apiURL = process.env.API_URL
+const apiToken = process.env.API_TOKEN
 
 const http = axios.create({
-  baseURL: 'https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/',
+  baseURL: apiURL,
   timeout: 1000,
   headers: {
     'X-Custom-Header': 'foobar',
+    'Authorization': `Bearer ${apiToken}`
   }
 })
 
