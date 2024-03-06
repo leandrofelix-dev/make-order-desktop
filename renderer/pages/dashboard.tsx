@@ -15,10 +15,7 @@ import { Section } from '../components/organisms/section'
 import { Box } from '../components/organisms/box'
 import { BestDishes } from '../components/molecules/best-dishes'
 import { RegisterModal } from '../components/molecules/register-modal'
-import { menu } from '../mocks/data'
-import { checkToken } from '../actions/check-token'
-
-checkToken()
+import { menu } from '../mocks/data'  
 
 export default function HomePage () {
   const [isOpenModal, setIsOpenModal] = useState(false)
