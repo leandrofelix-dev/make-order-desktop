@@ -4,8 +4,6 @@ import { Button } from '../atoms/button'
 import { FaDoorOpen } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 
-import dotenv from 'dotenv'
-
 interface ProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -14,13 +12,12 @@ interface ProfileModalProps {
 }
 
 function ProfileModal({ isOpen, onClose, name, role }: ProfileModalProps) {
-  dotenv.config()
   const [isLogged, setIsLogged] = useState(false)
 
-  const token = global.localStorage.getItem('isLogged')
+  const token = global.localStorage.getItem('token')
 
   useEffect(() => {
-    if (token) setIsLogged(true)
+    if (token !== '') setIsLogged(true)
   }, [token])
 
   return (
@@ -52,7 +49,10 @@ function ProfileModal({ isOpen, onClose, name, role }: ProfileModalProps) {
                     </div>
                   </div>
                   <div>
-                    <Button variant={'danger'}>
+                    <Button variant={'danger'} action={() => {
+                      global.localStorage.setItem('token', '')
+                      global.location.href = '/login'
+                    }}>
                       <FaDoorOpen size={20} />
                       Sair
                     </Button>

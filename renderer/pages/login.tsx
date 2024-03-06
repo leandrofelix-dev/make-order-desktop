@@ -7,6 +7,7 @@ import { NavBar } from '../components/organisms/navbar'
 import { View } from '../components/organisms/view'
 import { authenticate } from '../actions/auth'
 
+
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

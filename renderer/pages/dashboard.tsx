@@ -18,6 +18,10 @@ import { RegisterModal } from '../components/molecules/register-modal'
 import { menu } from '../mocks/data'  
 
 export default function HomePage () {
+  const token = global.localStorage.getItem('token')
+  if (token === '')
+    global.location.href = '/login'
+
   const [isOpenModal, setIsOpenModal] = useState(false)
 
   const handleModalStateChange = () =>
