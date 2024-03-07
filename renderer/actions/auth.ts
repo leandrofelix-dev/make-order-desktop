@@ -8,8 +8,7 @@ type Login = {
 
 async function authenticate(data: Login): Promise<void> {
   try {
-    const { email, senha } = data
-    const body = { email, senha }
+    const body = data
 
     const response = await http.post('https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/auth/login', body, {
       headers: { 

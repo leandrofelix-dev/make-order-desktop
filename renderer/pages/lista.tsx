@@ -54,27 +54,33 @@ export default function Lista() {
         </div>
         <Section>
           <Card>
-            <div className="flex items-center justify-stretch font-semibold p-2 mb-2 gap-14">
-              <span>Item</span>
-              <span>Atendente</span>
-              <span>Data</span>
-              <span>Código</span>
-              <span>Preço do prato</span>
-              <span>Mesa</span>
-              <span>Observação</span>
+            <div className="flex items-center justify-stretch font-semibold gap-2 p-4">
+              <div className='w-full'><span>Item</span></div>
+              <div className='w-full'><span>Atendente</span></div>
+              <div className='w-full'><span>Data</span></div>
+              <div className='w-full'><span>Código</span></div>
+              <div className='w-full'><span>Preço</span></div>
+              <div className='w-full'><span>Mesa</span></div>
+              <div className='w-full'><span>Observação</span></div>
+              <div className='bg-primary w-10 h-10'>.</div>
             </div>
-            {pedido.map((item) => (
-              <OrderItem
-                item={item.item}
-                atendente={item.atendente}
-                data={item.data}
-                codigo={item.codigo}
-                preco={item.preco}
-                mesa={item.mesa}
-                observacao={item.observacao}
-                key={item.codigo}
-              ></OrderItem>
-            ))}
+
+            <div className='flex flex-col gap-2'>
+              {pedido.map((item) => {
+                return (
+                  <OrderItem
+                    item={item.item}
+                    atendente={item.atendente}
+                    data={item.data}
+                    codigo={item.codigo}
+                    preco={item.preco}
+                    mesa={item.mesa}
+                    observacao={item.observacao}
+                    key={item.codigo}
+                  ></OrderItem>
+                )
+              })}
+            </div>
           </Card>
         </Section>
       </View>
