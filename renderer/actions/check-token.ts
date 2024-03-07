@@ -2,7 +2,7 @@ async function checkToken() {
   try {
     const token = await global.localStorage.getItem('token')
     if (!token) {
-      global.location.href = '/login'
+      global.location.href = '/conta/login'
       return null
     }
     return token

@@ -41,7 +41,7 @@ function ProfileModal({ isOpen, onClose, name, role }: ProfileModalProps) {
                   <div>
                     <Button variant={'danger'} action={() => {
                       global.localStorage.setItem('token', '')
-                      global.location.href = '/login'
+                      global.location.href = '/conta/login'
                     }}>
                       <FaDoorOpen size={20} />
                       Sair

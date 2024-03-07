@@ -47,7 +47,7 @@ export default function Register () {
           <div className="flex justify-between gap-1">
             <span>Já tem cadastro?</span>
             <div className="text-primary">
-              <Link href="/login">Fazer login</Link>
+              <Link href="/conta/login">Fazer login</Link>
             </div>
           </div>
 
