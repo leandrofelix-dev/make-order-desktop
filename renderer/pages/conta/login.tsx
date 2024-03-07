@@ -1,11 +1,12 @@
 'use client'
-import { useState } from 'react'
+
 import Link from 'next/link'
-import { Button } from '../components/atoms/button'
-import { HeadingOne } from '../components/atoms/heading-one'
-import { NavBar } from '../components/organisms/navbar'
-import { View } from '../components/organisms/view'
-import { authenticate } from '../actions/auth'
+import { useState } from 'react'
+import { authenticate } from '../../actions/auth'
+import { Button } from '../../components/atoms/button'
+import { HeadingOne } from '../../components/atoms/heading-one'
+import { View } from '../../components/organisms/view'
+
 
 export default function Login() {
   const [loginData, setLoginData] = useState({ email: '', senha: '' })
@@ -25,7 +26,6 @@ export default function Login() {
   return (
     <>
       <View>
-        <NavBar />
         <div className="flex flex-col items-center justify-center gap-4 pt-5 "></div>
         <div className="flex justify-center items-center text-5xl text-slate_900 pt-24 z-index mb-12">
           <h1 className="font-bold">Make</h1>

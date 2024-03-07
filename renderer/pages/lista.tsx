@@ -35,7 +35,7 @@ export default function Lista() {
             <SearchBar />
           </div>
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between my-8">
           <ButtonList />
           <div className="w-64">
             <Button variant="primary" action={handleOpenModal}>
@@ -62,7 +62,7 @@ export default function Lista() {
               <div className='w-full'><span>Preço</span></div>
               <div className='w-full'><span>Mesa</span></div>
               <div className='w-full'><span>Observação</span></div>
-              <div className='bg-primary w-10 h-10'>.</div>
+              <div className='h-7 aspect-square'></div>
             </div>
 
             <div className='flex flex-col gap-2'>

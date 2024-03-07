@@ -1,13 +1,12 @@
-import { Button } from '../components/atoms/button'
-import { HeadingOne } from '../components/atoms/heading-one'
-import { NavBar } from '../components/organisms/navbar'
-import { View } from '../components/organisms/view'
+'use client'
+import { Button } from '../../components/atoms/button'
+import { HeadingOne } from '../../components/atoms/heading-one'
+import { View } from '../../components/organisms/view'
 
 export default function Recuperar () {
   return (
     <>
       <View>
-        <NavBar />
         <div className="flex justify-center items-center text-5xl text-slate_900 pt-24 z-index">
           <h1 className="font-bold">Make</h1>
           <h1>order</h1>
