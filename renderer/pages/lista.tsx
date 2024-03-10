@@ -12,6 +12,8 @@ import { OrderItem } from '../components/molecules/order-item '
 import { RegisterModal } from '../components/molecules/register-modal'
 import { checkToken } from '../actions/check-token'
 import { getPedidos } from '../services/get-pedidos'
+import { deletePedido } from '../services/delete-pedidos'
+import { atualizaStatusPedido } from '../services/atualizar-status-pedido'
 
 export default function Lista() {
   checkToken()
@@ -20,24 +22,40 @@ export default function Lista() {
   const [pedidos, setPedidos] = useState([])
 
   useEffect(() => {
-    async function fetchPratos() {
+    async function fetchPedidos() {
       try {
-        const pratos = await getPedidos()
-        setPedidos(pratos)
+        const data = await getPedidos()
+        setPedidos(data)
       } catch (error) {
-        console.error('Erro ao obter os pratos:', error)
+        console.error('Erro ao obter os pedidos:', error)
       }
     }
 
-    checkToken()
-    fetchPratos()
+    fetchPedidos()
   }, [])
 
   const handleModalStateChange = () => setIsOpenModal((prev) => !prev)
 
   const handleButtonListClick = (index) => {
     setActiveButtonIndex(index)
-    // colocar lógica para alterar valores
+  }
+
+  const deletePedidos = async (id) => {
+    try {
+      await deletePedido(id)
+      const updatedPedidos = pedidos.filter(pedido => pedido.id !== id)
+      setPedidos(updatedPedidos)
+    } catch (error) {
+      console.error('Erro ao excluir o pedido:', error)
+    }
+  }
+
+  const updatePedidoStatus = async (id, pedido) => {
+    try {
+      await atualizaStatusPedido(id, pedido)
+    } catch (error) {
+      console.error('Erro ao atualizar o status do pedido:', error)
+    }
   }
 
   return (
@@ -94,20 +112,21 @@ export default function Lista() {
             </div>
 
             <div className="flex flex-col gap-2">
-              {pedidos.map((element) => {
-                return (
-                  <OrderItem
-                    item={element.itens[0].nome}
-                    atendente={'nome do(a) atendente'}
-                    data={'data aqui'}
-                    codigo={'codigo aqui'}
-                    preco={`R$ ${element.itens[0].preco}`}
-                    mesa={'mesa aqui'}
-                    observacao={element.itens[0].descricao}
-                    key={element.id}
-                  />
-                )
-              })}
+              {pedidos.map((element) => (
+                <OrderItem
+                  item={element.itens[0].nome}
+                  atendente={element.atendente}
+                  data={element.data}
+                  codigo={element.codigo}
+                  preco={`R$ ${element.itens[0].preco}`}
+                  mesa={element.mesa}
+                  observacao={element.itens[0].descricao}
+                  id={element.id}
+                  deletePedidos={deletePedidos}
+                  atualizaStatusPedido={updatePedidoStatus}
+                  key={element.id}
+                />
+              ))}
             </div>
           </Card>
         </Section>

@@ -1,6 +1,6 @@
 import { apiURL, http } from '../config/axios'
 
-async function deletePedidos(id: string) {
+async function deletePedido(id: string) {
   try {
     const response = await http.delete(`${apiURL}/api/v1.0/pedidos/delete/${id}`, {
       headers: {
@@ -14,4 +14,4 @@ async function deletePedidos(id: string) {
   }
 }
 
-export { deletePedidos }
+export { deletePedido }
