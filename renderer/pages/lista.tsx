@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../components/atoms/button'
 import { View } from '../components/organisms/view'
 import { NavBar } from '../components/organisms/navbar'
@@ -9,21 +9,32 @@ import { Card } from '../components/organisms/card'
 import { ButtonList } from '../components/molecules/button-list'
 import { FaPlusCircle } from 'react-icons/fa'
 import { OrderItem } from '../components/molecules/order-item '
-import { pedido } from '../mocks/data'
 import { RegisterModal } from '../components/molecules/register-modal'
 import { checkToken } from '../actions/check-token'
+import { getPedidos } from '../services/get-pedidos'
 
 export default function Lista() {
   checkToken()
-  const [openRegisterModal, setOpenRegisterModal] = useState(false)
+  const [isOpenModal, setIsOpenModal] = useState(false)
 
-  const handleOpenModal = () => {
-    setOpenRegisterModal(true)
-  }
+  const [pedidos, setPedidos] = useState([])
 
-  const handleCloseModal = () => {
-    setOpenRegisterModal(false)
-  }
+  useEffect(() => {
+    async function fetchPratos() {
+      try {
+        const pratos = await getPedidos()
+        setPedidos(pratos)
+      } catch (error) { 
+        console.error('Erro ao obter os pratos:', error)
+      }
+    }
+
+    checkToken()
+    fetchPratos()
+  }, [])
+
+  const handleModalStateChange = () =>
+    setIsOpenModal((prev) => !prev)
 
   return (
     <>
@@ -38,15 +49,15 @@ export default function Lista() {
         <div className="flex items-center justify-between my-8">
           <ButtonList />
           <div className="w-64">
-            <Button variant="primary" action={handleOpenModal}>
+            <Button variant="primary" action={handleModalStateChange}>
               <FaPlusCircle />
               Registrar pedido
             </Button>
-            {openRegisterModal && (
+            {isOpenModal && (
               <RegisterModal
                 title="Registrar pedido"
-                isOpen={openRegisterModal}
-                onClose={handleCloseModal}
+                isOpen={isOpenModal}
+                onClose={handleModalStateChange}
                 apiURL="https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/pedidos/create"
               />
             )}
@@ -66,17 +77,17 @@ export default function Lista() {
             </div>
 
             <div className='flex flex-col gap-2'>
-              {pedido.map((item) => {
-                return (
+              {pedidos.map((element) => {
+                return (  
                   <OrderItem
-                    item={item.item}
-                    atendente={item.atendente}
-                    data={item.data}
-                    codigo={item.codigo}
-                    preco={item.preco}
-                    mesa={item.mesa}
-                    observacao={item.observacao}
-                    key={item.codigo}
+                    item={element.itens[0].nome}
+                    atendente={'nome do(a) atendente'}
+                    data={'data aqui'}
+                    codigo={'codigo aqui'}
+                    preco={`R$ ${element.itens[0].preco}`}
+                    mesa={'mesa aqui'}
+                    observacao={element.itens[0].descricao}
+                    key={element.id}
                   ></OrderItem>
                 )
               })}

@@ -4,7 +4,6 @@ import { Button } from '../../components/atoms/button'
 import { HeadingOne } from '../../components/atoms/heading-one'
 import { View } from '../../components/organisms/view'
 
-
 export default function Register () {
   return (
     <>

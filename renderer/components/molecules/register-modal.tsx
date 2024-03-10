@@ -1,8 +1,8 @@
-import axios from 'axios'
 import { RiCloseFill } from 'react-icons/ri'
 import { useState } from 'react'
 import { Button } from '../atoms/button'
 import { HeadingOne } from '../atoms/heading-one'
+import { criarPrato } from '../../services/criar-prato'
 
 interface Item {
   nome: string;
@@ -14,11 +14,10 @@ interface Item {
 interface RegisterModalProps {
   isOpen: boolean;
   onClose: () => void;
-  apiURL: string;
   title: string;
 }
 
-function RegisterModal({ isOpen, onClose, apiURL, title }: RegisterModalProps) {
+function RegisterModal({ isOpen, onClose, title }: RegisterModalProps) {
   const [item, setItem] = useState<Item>({
     nome: '',
     preco: 0,
@@ -36,7 +35,8 @@ function RegisterModal({ isOpen, onClose, apiURL, title }: RegisterModalProps) {
 
   async function handleAddItem() {
     try {
-      const response = await axios.post(apiURL, item)
+      const response = await criarPrato(item)
+      console.log(item)
       console.log('Item registrado com sucesso!', response.data)
       onClose()
     } catch (error) {

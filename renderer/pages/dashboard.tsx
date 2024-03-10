@@ -19,25 +19,28 @@ import { checkToken } from '../actions/check-token'
 import { getPratos } from '../services/get-pratos'
 
 export default function HomePage() {
-  const [items, setItems] = useState([])
   const [isOpenModal, setIsOpenModal] = useState(false)
+  const [items, setItems] = useState([])
+
+  const fetchItems = async () => {
+    try {
+      const pratos = await getPratos()
+      setItems(pratos)
+    } catch (error) {
+      console.error('Erro ao obter os pratos:', error)
+    }
+  }
 
   useEffect(() => {
-    async function fetchItems() {
-      try {
-        const pratos = await getPratos()
-        setItems(pratos)
-      } catch (error) {
-        console.error('Erro ao obter os pratos:', error)
-      }
-    }
-
     checkToken()
     fetchItems()
   }, [])
 
-  const handleModalStateChange = () =>
+  const handleModalStateChange = () => {
     setIsOpenModal((prev) => !prev)
+    // Atualizar os pratos após fechar o modal
+    fetchItems()
+  }
 
   return (
     <View>
@@ -65,7 +68,6 @@ export default function HomePage() {
                   title="Registrar Item"
                   isOpen={isOpenModal}
                   onClose={handleModalStateChange}
-                  apiURL="https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/itens/create"
                 />
               )}
             </div>
@@ -80,7 +82,7 @@ export default function HomePage() {
               </div>
             </div>
             {items.map((prato) => (
-              <MenuItem prato={prato.nome} ingredientes={prato.descricao} key={prato.nome}/>
+              <MenuItem prato={prato.nome} ingredientes={prato.descricao} key={prato.nome} id={prato.id}/>
             ))}
           </div>
         </Card>
@@ -89,15 +91,15 @@ export default function HomePage() {
             <HeadingThree>Top atendentes</HeadingThree>
             <ProfileCard
               name={'Amanda Souza'}
-              role={'Creative Director'}
+              role={'Atendente'}
             ></ProfileCard>
             <ProfileCard
               name={'Leandro Félix'}
-              role={'Creative Director'}
+              role={'Atendente'}
             ></ProfileCard>
             <ProfileCard
               name={'Bruno Oliveira'}
-              role={'Creative Director'}
+              role={'Atendente'}
             ></ProfileCard>
           </Card>
           <Card>
