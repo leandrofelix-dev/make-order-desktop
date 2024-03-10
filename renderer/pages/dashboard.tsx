@@ -82,7 +82,7 @@ export default function HomePage() {
             </div>
           </div>
           <div>
-            <div className="font-semibold flex mb-2">
+            <div className="font-semibold flex my-4">
               <div className="w-[calc(50%+16px)]">
                 <span>Item</span>
               </div>

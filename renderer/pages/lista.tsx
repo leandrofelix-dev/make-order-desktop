@@ -16,7 +16,7 @@ import { getPedidos } from '../services/get-pedidos'
 export default function Lista() {
   checkToken()
   const [isOpenModal, setIsOpenModal] = useState(false)
-
+  const [activeButtonIndex, setActiveButtonIndex] = useState(0)
   const [pedidos, setPedidos] = useState([])
 
   useEffect(() => {
@@ -35,6 +35,11 @@ export default function Lista() {
 
   const handleModalStateChange = () => setIsOpenModal((prev) => !prev)
 
+  const handleButtonListClick = (index) => {
+    setActiveButtonIndex(index)
+    // colocar lógica para alterar valores
+  }
+
   return (
     <>
       <View>
@@ -46,7 +51,7 @@ export default function Lista() {
           </div>
         </div>
         <div className="flex items-center justify-between my-8">
-          <ButtonList />
+          <ButtonList active={activeButtonIndex} onItemClick={handleButtonListClick} />
           <div className="w-64">
             <Button variant="primary" action={handleModalStateChange}>
               <FaPlusCircle />

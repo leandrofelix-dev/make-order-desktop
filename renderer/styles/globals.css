@@ -3,10 +3,22 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Inter';
-  src: url('../public/fonts/inter.ttf') format('truetype');
+  font-family: "Inter";
+  src: url("../public/fonts/inter.ttf") format("truetype");
 }
 
-*{
-  font-family: 'Inter', sans-serif;
+* {
+  font-family: "Inter", sans-serif;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }

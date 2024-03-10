@@ -23,7 +23,6 @@ function NavBar() {
   const fetchUserCredentials = async () => {
     try {
       const response = await getUserCredentials()
-      console.log(response)
       if (!response) console.error('Erro ao obter os dados do usuário')
       setUser(response)
     } catch (error) {
@@ -56,7 +55,7 @@ function NavBar() {
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
         name={user.nome}
-        role={user.cargo}
+        role={user.email}
       />
     </>
   )
