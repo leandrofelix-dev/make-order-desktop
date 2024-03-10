@@ -16,11 +16,11 @@ async function authenticate(data: Login): Promise<void> {
       }
     })
     global.localStorage.setItem('token', response.data.token)
-    global.localStorage.setItem('user', {
-      name: 'Administrador',
+    global.localStorage.setItem('user', JSON.stringify({
+      nome: 'Administrador',
       cargo: 'atendente',
       email: data.email
-    }.toString())
+    }))
     global.location.href = '/dashboard'
 
   } catch (error) {

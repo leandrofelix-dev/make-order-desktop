@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 import Image from 'next/image'
 import Logo from '../../public/images/logo.svg'
@@ -7,10 +5,31 @@ import { Profile } from '../molecules/profile'
 import { NavList } from '../molecules/nav-list'
 import { Separator } from '../atoms/separator'
 import { ProfileModal } from '../molecules/profile-modal'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { getUserCredentials } from '../../actions/get-user-credentials'
 
 function NavBar() {
   const [openModal, setOpenModal] = useState(false)
+  const [user, setUser] = useState({
+    nome: 'Leandro Felix',
+    cargo: 'atendente',
+    email: 'adm@makeorder.com'
+  })
+
+  useEffect(() => {
+    fetchUserCredentials()
+  }, [])
+
+  const fetchUserCredentials = async () => {
+    try {
+      const response = await getUserCredentials()
+      console.log(response)
+      if (!response) console.error('Erro ao obter os dados do usuário')
+      setUser(response)
+    } catch (error) {
+      console.error('Erro ao obter os dados do usuário:', error)
+    }
+  }
 
   return (
     <>
@@ -27,8 +46,8 @@ function NavBar() {
           <NavList />
         </div>
         <Profile
-          name={'Jhon Doe'}
-          role={'Atendente'}
+          name={user.nome}
+          role={user.cargo}
           action={() => setOpenModal(true)}
         />
       </nav>
@@ -36,8 +55,8 @@ function NavBar() {
       <ProfileModal
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
-        name={'Jhon Doe'}
-        role={'Atendente'}
+        name={user.nome}
+        role={user.cargo}
       />
     </>
   )

@@ -57,7 +57,6 @@ export default function Lista() {
                 title="Registrar pedido"
                 isOpen={isOpenModal}
                 onClose={handleModalStateChange}
-                apiURL="https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/pedidos/create"
               />
             )}
           </div>

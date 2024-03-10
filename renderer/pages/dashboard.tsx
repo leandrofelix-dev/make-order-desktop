@@ -9,7 +9,7 @@ import { HeadingOne } from '../components/atoms/heading-one'
 import { HeadingTwo } from '../components/atoms/heading-two'
 import { MenuItem } from '../components/molecules/menu-item'
 import { HeadingThree } from '../components/atoms/heading-three'
-import { ProfileCard } from '../components/molecules/profile_card'
+import { ProfileCard } from '../components/molecules/profile-card'
 import { HeadingFour } from '../components/atoms/heading-four'
 import { Section } from '../components/organisms/section'
 import { Box } from '../components/organisms/box'
@@ -47,9 +47,9 @@ export default function HomePage() {
     fetchItems()
   }
 
-  const handleItemRemoval = (itemIdToRemove: string) => {
+  const handleItemRemoval = (itemIdToRemove: string) =>
     setItems(items.filter(item => item.id !== itemIdToRemove))
-  }
+
 
   return (
     <View>
