@@ -24,7 +24,7 @@ export default function Lista() {
       try {
         const pratos = await getPedidos()
         setPedidos(pratos)
-      } catch (error) { 
+      } catch (error) {
         console.error('Erro ao obter os pratos:', error)
       }
     }
@@ -33,8 +33,7 @@ export default function Lista() {
     fetchPratos()
   }, [])
 
-  const handleModalStateChange = () =>
-    setIsOpenModal((prev) => !prev)
+  const handleModalStateChange = () => setIsOpenModal((prev) => !prev)
 
   return (
     <>
@@ -66,19 +65,33 @@ export default function Lista() {
         <Section>
           <Card>
             <div className="flex items-center justify-stretch font-semibold gap-2 p-4">
-              <div className='w-full'><span>Item</span></div>
-              <div className='w-full'><span>Atendente</span></div>
-              <div className='w-full'><span>Data</span></div>
-              <div className='w-full'><span>Código</span></div>
-              <div className='w-full'><span>Preço</span></div>
-              <div className='w-full'><span>Mesa</span></div>
-              <div className='w-full'><span>Observação</span></div>
-              <div className='h-7 aspect-square'></div>
+              <div className="w-full">
+                <span>Item</span>
+              </div>
+              <div className="w-full">
+                <span>Atendente</span>
+              </div>
+              <div className="w-full">
+                <span>Data</span>
+              </div>
+              <div className="w-full">
+                <span>Código</span>
+              </div>
+              <div className="w-full">
+                <span>Preço</span>
+              </div>
+              <div className="w-full">
+                <span>Mesa</span>
+              </div>
+              <div className="w-full">
+                <span>Observação</span>
+              </div>
+              <div className="h-7 w-[700px]"></div>
             </div>
 
-            <div className='flex flex-col gap-2'>
+            <div className="flex flex-col gap-2">
               {pedidos.map((element) => {
-                return (  
+                return (
                   <OrderItem
                     item={element.itens[0].nome}
                     atendente={'nome do(a) atendente'}
@@ -88,7 +101,7 @@ export default function Lista() {
                     mesa={'mesa aqui'}
                     observacao={element.itens[0].descricao}
                     key={element.id}
-                  ></OrderItem>
+                  />
                 )
               })}
             </div>
