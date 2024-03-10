@@ -18,28 +18,37 @@ import { RegisterModal } from '../components/molecules/register-modal'
 import { checkToken } from '../actions/check-token'
 import { getPratos } from '../services/get-pratos'
 
+interface Prato {
+  id: string;
+  nome: string;
+  descricao: string;
+}
+
 export default function HomePage() {
   const [isOpenModal, setIsOpenModal] = useState(false)
-  const [items, setItems] = useState([])
-
-  const fetchItems = async () => {
-    try {
-      const pratos = await getPratos()
-      setItems(pratos)
-    } catch (error) {
-      console.error('Erro ao obter os pratos:', error)
-    }
-  }
+  const [items, setItems] = useState<Prato[]>([])
 
   useEffect(() => {
     checkToken()
     fetchItems()
   }, [])
 
+  const fetchItems = async () => {
+    try {
+      const pratos: Prato[] = await getPratos()
+      setItems(pratos)
+    } catch (error) {
+      console.error('Erro ao obter os pratos:', error)
+    }
+  }
+
   const handleModalStateChange = () => {
     setIsOpenModal((prev) => !prev)
-    // Atualizar os pratos após fechar o modal
     fetchItems()
+  }
+
+  const handleItemRemoval = (itemIdToRemove: string) => {
+    setItems(items.filter(item => item.id !== itemIdToRemove))
   }
 
   return (
@@ -82,7 +91,13 @@ export default function HomePage() {
               </div>
             </div>
             {items.map((prato) => (
-              <MenuItem prato={prato.nome} ingredientes={prato.descricao} key={prato.nome} id={prato.id}/>
+              <MenuItem
+                prato={prato.nome}
+                ingredientes={prato.descricao}
+                key={prato.id}
+                id={prato.id}
+                onItemRemoval={handleItemRemoval}
+              />
             ))}
           </div>
         </Card>

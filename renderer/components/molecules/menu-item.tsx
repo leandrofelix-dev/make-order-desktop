@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+import React from 'react'
 import { FaTrash } from 'react-icons/fa'
 import { deletePrato } from '../../services/delete-prato'
 
@@ -5,15 +7,16 @@ interface MenuItemProps {
   prato: string;
   ingredientes: string;
   id: string;
+  onItemRemoval: (id: string) => void;
 }
 
-function MenuItem({ prato, ingredientes, id }: MenuItemProps) {
+function MenuItem({ prato, ingredientes, id, onItemRemoval }: MenuItemProps) {
 
   async function handleRemoveItem() {
     try {
-      console.log(id)
-      const response = await deletePrato(id)
-      console.log('Item removido com sucesso!', response.data)
+      await deletePrato(id)
+      console.log('Item removido com sucesso!')
+      onItemRemoval(id)
     } catch (error) {
       console.error('Erro ao remover prato:', error)
     }
@@ -25,7 +28,7 @@ function MenuItem({ prato, ingredientes, id }: MenuItemProps) {
       <span className="text-slate_700 font-semibold">{`${ingredientes.substring(0, 40)}...`}</span>
       <FaTrash
         className="transition-all ease-in-out text-slate_900 hover:text-danger/90 cursor-pointer"
-        onClick={() => handleRemoveItem()}
+        onClick={handleRemoveItem}
       />
     </div>
   )
