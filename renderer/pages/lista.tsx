@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from '../components/atoms/button'
-import { View } from '../components/organisms/view'
-import { NavBar } from '../components/organisms/navbar'
-import { HeadingOne } from '../components/atoms/heading-one'
-import { SearchBar } from '../components/atoms/search-bar'
-import { Section } from '../components/organisms/section'
-import { Card } from '../components/organisms/card'
-import { ButtonList } from '../components/molecules/button-list'
 import { FaPlusCircle } from 'react-icons/fa'
+import { checkToken } from '../actions/check-token'
+import { deletePedido } from '../services/delete-pedidos'
+import { getPedidos } from '../services/get-pedidos'
+import { atualizaStatusPedido } from '../services/atualizar-status-pedido'
+import { Button } from '../components/atoms/button'
+import { ButtonList } from '../components/molecules/button-list'
+import { Card } from '../components/organisms/card'
+import { NavBar } from '../components/organisms/navbar'
 import { OrderItem } from '../components/molecules/order-item '
 import { RegisterModal } from '../components/molecules/register-modal'
-import { checkToken } from '../actions/check-token'
-import { getPedidos } from '../services/get-pedidos'
-import { deletePedido } from '../services/delete-pedidos'
-import { atualizaStatusPedido } from '../services/atualizar-status-pedido'
+import { Section } from '../components/organisms/section'
+import { HeadingOne } from '../components/atoms/heading-one'
+import { SearchBar } from '../components/atoms/search-bar'
+import { View } from '../components/organisms/view'
 
 export default function Lista() {
   checkToken()
@@ -40,11 +40,10 @@ export default function Lista() {
     setActiveButtonIndex(index)
   }
 
-  const deletePedidos = async (id) => {
+  const deletePedidoAndUpdateState = async (id) => {
     try {
       await deletePedido(id)
-      const updatedPedidos = pedidos.filter(pedido => pedido.id !== id)
-      setPedidos(updatedPedidos)
+      setPedidos((prevPedidos) => prevPedidos.filter((pedido) => pedido.id !== id))
     } catch (error) {
       console.error('Erro ao excluir o pedido:', error)
     }
@@ -58,79 +57,81 @@ export default function Lista() {
     }
   }
 
-  return (
-    <>
-      <View>
-        <NavBar />
-        <div className="flex items-center justify-between">
-          <HeadingOne>Lista de pedidos</HeadingOne>
-          <div className="w-64">
-            <SearchBar />
-          </div>
-        </div>
-        <div className="flex items-center justify-between my-8">
-          <ButtonList active={activeButtonIndex} onItemClick={handleButtonListClick} />
-          <div className="w-64">
-            <Button variant="primary" action={handleModalStateChange}>
-              <FaPlusCircle />
-              Registrar pedido
-            </Button>
-            {isOpenModal && (
-              <RegisterModal
-                title="Registrar pedido"
-                isOpen={isOpenModal}
-                onClose={handleModalStateChange}
-              />
-            )}
-          </div>
-        </div>
-        <Section>
-          <Card>
-            <div className="flex items-center justify-stretch font-semibold gap-2 p-4">
-              <div className="w-full">
-                <span>Item</span>
-              </div>
-              <div className="w-full">
-                <span>Atendente</span>
-              </div>
-              <div className="w-full">
-                <span>Data</span>
-              </div>
-              <div className="w-full">
-                <span>Código</span>
-              </div>
-              <div className="w-full">
-                <span>Preço</span>
-              </div>
-              <div className="w-full">
-                <span>Mesa</span>
-              </div>
-              <div className="w-full">
-                <span>Observação</span>
-              </div>
-              <div className="h-7 w-[700px]"></div>
-            </div>
+  const filterPedidosByStatus = (pedidos, status) => {
+    switch(status) {
+      case 0:
+        return pedidos.filter(pedido => pedido.status_pedido === 'CONFIRMADO')
+      case 1:
+        return pedidos.filter(pedido => pedido.status_pedido === 'EM_PREPARO')
+      case 2:
+        return pedidos.filter(pedido => pedido.status_pedido === 'PRONTO')
+      case 3:
+        return pedidos.filter(pedido => pedido.status_pedido === 'CONCLUIDO')
+      default:
+        return pedidos
+    }
+  }
 
-            <div className="flex flex-col gap-2">
-              {pedidos.map((element) => (
-                <OrderItem
-                  item={element.itens[0].nome}
-                  atendente={element.atendente}
-                  data={element.data}
-                  codigo={element.codigo}
-                  preco={`R$ ${element.itens[0].preco}`}
-                  mesa={element.mesa}
-                  observacao={element.itens[0].descricao}
-                  id={element.id}
-                  deletePedidos={deletePedidos}
-                  atualizaStatusPedido={updatePedidoStatus}
-                  key={element.id}
-                />
-              ))}
-            </div>
-          </Card>
-        </Section>
-      </View>
-    </>
+  // Filtra os pedidos com base no status selecionado
+  const filteredPedidos = filterPedidosByStatus(pedidos, activeButtonIndex)
+
+  return (
+    <View>
+      <NavBar />
+      <div className="flex items-center justify-between">
+        <HeadingOne>Lista de pedidos</HeadingOne>
+        <div className="w-64">
+          <SearchBar />
+        </div>
+      </div>
+      <div className="flex items-center justify-between my-8">
+        <ButtonList active={activeButtonIndex} onItemClick={handleButtonListClick} />
+        <div className="w-64">
+          <Button variant="primary" action={handleModalStateChange}>
+            <FaPlusCircle />
+            Registrar pedido
+          </Button>
+          {isOpenModal && (
+            <RegisterModal
+              title="Registrar pedido"
+              isOpen={isOpenModal}
+              onClose={handleModalStateChange}
+            />
+          )}
+        </div>
+      </div>
+      <Section>
+        <Card>
+          <div className="flex items-center justify-stretch font-semibold gap-2 p-4">
+            <div className="w-full">Item</div>
+            <div className="w-full">Atendente</div>
+            <div className="w-full">Data</div>
+            <div className="w-full">Código</div>
+            <div className="w-full">Preço</div>
+            <div className="w-full">Mesa</div>
+            <div className="w-full">Observação</div>
+            <div className="h-7 w-[700px]"></div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            {filteredPedidos.map((element) => (
+              <OrderItem
+                item={element.itens[0].nome}
+                atendente={element.funcionario}
+                data={element.data}
+                codigo={element.codigo}
+                preco={`R$ ${parseFloat(element.itens[0].preco).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}
+                mesa={element.mesa}
+                observacao={element.itens[0].descricao}
+                id={element.id}
+                deletePedidos={deletePedidoAndUpdateState}
+                atualizaStatusPedido={updatePedidoStatus}
+                key={element.id}
+              />
+            ))}
+          </div>
+        </Card>
+      </Section>
+    </View>
   )
 }

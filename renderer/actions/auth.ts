@@ -24,7 +24,8 @@ async function authenticate(data: Login): Promise<void> {
     global.location.href = '/dashboard'
 
   } catch (error) {
-    console.log('Erro ao fazer login:', error)
+    console.error('Erro ao fazer login:', error)
+    throw new Error('Ocorreu um erro ao fazer login. Por favor, verifique suas credenciais e tente novamente.')
   }
 }
 

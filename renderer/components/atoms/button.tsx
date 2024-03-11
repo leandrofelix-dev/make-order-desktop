@@ -5,9 +5,10 @@ interface ButtonProps {
   variant: variant
   action?: (data: any) => void | Promise<void>
   children?: React.ReactNode
+  disabled?: boolean
 }
 
-function Button({ variant, action, children }: ButtonProps) {
+function Button({ variant, action, children, disabled }: ButtonProps) {
 
     let bg = ''
     let text = ''
@@ -29,6 +30,9 @@ function Button({ variant, action, children }: ButtonProps) {
       default:
         break
     }
+
+  disabled ? bg = 'bg-slate_300 cursor-not-allowed text-slate_500' : bg
+    
 
   return (
     <button

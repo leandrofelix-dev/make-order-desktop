@@ -14,14 +14,16 @@ function ButtonList({ active, onItemClick }: ButtonListProps) {
   }
 
   const renderListItems = () => {
-    return ['Aguardando confirmação', 'Em preparo', 'Pronto', 'Concluído'].map((label, index) => (
-      <ListItem
-        key={index}
-        label={label}
-        isActive={index === active}
-        onClick={() => handleItemClick(index)}
-      />
-    ))
+    return ['Aguardando confirmação', 'Em preparo', 'Pronto', 'Concluído'].map(
+      (label, index) => (
+        <ListItem
+          key={index}
+          label={label}
+          isActive={index === active}
+          onClick={() => handleItemClick(index)}
+        />
+      )
+    )
   }
 
   return (
