@@ -52,6 +52,15 @@ export default function Lista() {
   const updatePedidoStatus = async (id, pedido) => {
     try {
       await atualizaStatusPedido(id, pedido)
+
+      const updatedPedidos = pedidos.map(p => {
+        if (p.id === id) {
+          return { ...p, status_pedido: pedido.status_pedido }
+        }
+        return p
+      })
+
+      setPedidos(updatedPedidos)
     } catch (error) {
       console.error('Erro ao atualizar o status do pedido:', error)
     }
@@ -72,7 +81,6 @@ export default function Lista() {
     }
   }
 
-  // Filtra os pedidos com base no status selecionado
   const filteredPedidos = filterPedidosByStatus(pedidos, activeButtonIndex)
 
   return (
