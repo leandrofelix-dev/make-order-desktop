@@ -8,12 +8,12 @@ import { Button } from '../components/atoms/button'
 import { ButtonList } from '../components/molecules/button-list'
 import { Card } from '../components/organisms/card'
 import { NavBar } from '../components/organisms/navbar'
-import { RegisterModal } from '../components/molecules/register-modal'
 import { Section } from '../components/organisms/section'
 import { HeadingOne } from '../components/atoms/heading-one'
 import { SearchBar } from '../components/atoms/search-bar'
 import { View } from '../components/organisms/view'
 import { OrderItem } from '../components/molecules/order-item '
+import { CriarPedidoModal } from '../components/molecules/criar-pedidos-modal'
 
 export default function Lista() {
   checkToken()
@@ -91,10 +91,11 @@ export default function Lista() {
             Registrar pedido
           </Button>
           {isOpenModal && (
-            <RegisterModal
+            <CriarPedidoModal
               title="Registrar pedido"
               isOpen={isOpenModal}
               onClose={handleModalStateChange}
+              user={undefined}
             />
           )}
         </div>

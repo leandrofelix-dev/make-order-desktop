@@ -31,7 +31,7 @@ function Button({ variant, action, children, disabled }: ButtonProps) {
         break
     }
 
-  disabled ? bg = 'bg-slate_300 cursor-not-allowed text-slate_500' : bg
+  disabled ? bg = 'bg-slate_300 cursor-not-allowed text-slate_500 my-2' : bg
     
 
   return (
