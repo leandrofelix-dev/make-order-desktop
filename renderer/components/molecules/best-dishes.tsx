@@ -1,9 +1,9 @@
-interface ProfileProps {
+interface BestDishesProps {
   name: string
   qtd: string
 }
 
-function BestDishes ({ name, qtd }: ProfileProps) {
+function BestDishes ({ name, qtd }: BestDishesProps) {
   return (
     <div className="flex items-center gap-3 rounded-md my-2 bg-slate_50 py-3 pl-4 pr-16 justify-items-start">
       <div>

@@ -18,6 +18,7 @@ import { RegisterModal } from '../components/molecules/register-modal'
 import { checkToken } from '../actions/check-token'
 import { getPratos } from '../services/get-pratos'
 import { getTopPratos } from '../services/get-top-pratos'
+import { getTopAtendentes } from '../services/get-top-atendentes'
 
 interface Prato {
   id: string;
@@ -29,6 +30,7 @@ export default function HomePage() {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [items, setItems] = useState<Prato[]>([])
   const [topPratos, setTopPratos] = useState([])
+  const [topAtendentes, setTopAtendentes] = useState([])
 
   useEffect(() => {
     checkToken()
@@ -39,10 +41,13 @@ export default function HomePage() {
     try {
       const pratos: Prato[] = await getPratos()
       const topPratos = await getTopPratos()
+      const topAtendentes = await getTopAtendentes()
+
       setItems(pratos)
       setTopPratos(topPratos)
+      setTopAtendentes(topAtendentes)
     } catch (error) {
-      console.error('Erro ao obter os pratos:', error)
+      console.error('Erro ao obter dados:', error)
     }
   }
 
@@ -110,15 +115,14 @@ export default function HomePage() {
         <Box>
           <Card>
             <HeadingThree>Top atendentes</HeadingThree>
-            <ProfileCard name={'Amanda Souza'} role={'Atendente'}></ProfileCard>
-            <ProfileCard
-              name={'Leandro Félix'}
-              role={'Atendente'}
-            ></ProfileCard>
-            <ProfileCard
-              name={'Bruno Oliveira'}
-              role={'Atendente'}
-            ></ProfileCard>
+            {topAtendentes.map((atendente) => (
+              <ProfileCard
+                name={atendente.nome}
+                role={atendente.cargo}
+                key={atendente.nome}
+              />
+            
+            ))}
           </Card>
           <Card>
             <HeadingFour>Pratos mais vendidos</HeadingFour>
