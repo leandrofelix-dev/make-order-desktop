@@ -1,4 +1,3 @@
-// arquivo: pages/lista.tsx
 import React, { useEffect, useState } from 'react'
 import { FaPlusCircle } from 'react-icons/fa'
 import { checkToken } from '../actions/check-token'
@@ -22,29 +21,30 @@ export default function Lista() {
   const [activeButtonIndex, setActiveButtonIndex] = useState(0)
   const [pedidos, setPedidos] = useState([])
 
-  useEffect(() => {
-    async function fetchPedidos() {
-      try {
-        const data = await getPedidos()
-        setPedidos(data)
-      } catch (error) {
-        console.error('Erro ao obter os pedidos:', error)
-      }
+  const fetchPedidos = async () => {
+    try {
+      const data = await getPedidos()
+      setPedidos(data)
+    } catch (error) {
+      console.error('Erro ao obter os pedidos:', error)
     }
+  }
 
+  useEffect(() => {
     fetchPedidos()
-  }, [])
+  }, [activeButtonIndex])
 
   const handleModalStateChange = () => setIsOpenModal(prev => !prev)
 
   const handleButtonListClick = index => {
     setActiveButtonIndex(index)
+    fetchPedidos()
   }
 
   const deletePedidoAndUpdateState = async id => {
     try {
       await deletePedido(id)
-      setPedidos(pedidos)
+      setPedidos(pedidos.filter(pedido => pedido.id !== id))
     } catch (error) {
       console.error('Erro ao excluir o pedido:', error)
     }
@@ -53,10 +53,7 @@ export default function Lista() {
   const updatePedidoStatus = async id => {
     try {
       await atualizaStatusPedido(id)
-      const updatedPedidos = [...pedidos]
-      const pedidoIndex = updatedPedidos.findIndex(pedido => pedido.id === id)
-      updatedPedidos[pedidoIndex] = await getPedidos()
-      setPedidos(updatedPedidos)
+      fetchPedidos()
     } catch (error) {
       console.error('Erro ao atualizar o status do pedido:', error)
     }
