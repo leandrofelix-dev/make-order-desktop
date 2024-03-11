@@ -1,14 +1,13 @@
-import Link from "next/link";
-import { Button } from "../components/atoms/button";
-import { HeadingOne } from "../components/atoms/heading-one";
-import { NavBar } from "../components/organisms/navbar";
-import { View } from "../components/organisms/view";
+'use client'
+import Link from 'next/link'
+import { Button } from '../../components/atoms/button'
+import { HeadingOne } from '../../components/atoms/heading-one'
+import { View } from '../../components/organisms/view'
 
-export default function Register() {
+export default function Register () {
   return (
     <>
       <View>
-        <NavBar />
         <div className="flex flex-col items-center justify-center gap-4 pt-5 ">
           <div className="flex justify-center items-center text-5xl text-slate_900">
             <h1 className="font-bold">Make</h1>
@@ -18,7 +17,7 @@ export default function Register() {
 
             <HeadingOne>Registrar-se</HeadingOne>
 
-            <div className="flex flex-col gap-3 text-slate_900 ml-8 mr-8">
+            <div className="flex flex-col gap-3 text-slate_900">
               <span>Email</span>
               <input className="bg-slate_50 h-8 text-sm placeholder:text-slate_500 w-full" type="text" />
 
@@ -36,7 +35,7 @@ export default function Register() {
 
               <Button
                 variant="primary"
-                action={() => alert("Usuário logado")}
+                action={() => console.log('Usuário logado')}
               >
                 Registrar-se
               </Button>
@@ -47,7 +46,7 @@ export default function Register() {
           <div className="flex justify-between gap-1">
             <span>Já tem cadastro?</span>
             <div className="text-primary">
-              <Link href="/login">Fazer login</Link>
+              <Link href="/conta/login">Fazer login</Link>
             </div>
           </div>
 

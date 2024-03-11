@@ -1,119 +1,142 @@
-import React, { useState } from "react";
-import { IoMdDownload } from "react-icons/io";
-import { FaPlusCircle } from "react-icons/fa";
-import { Button } from "../components/atoms/button";
-import { View } from "../components/organisms/view";
-import { NavBar } from "../components/organisms/navbar";
-import { Card } from "../components/organisms/card";
-import { HeadingOne } from "../components/atoms/heading-one";
-import { HeadingTwo } from "../components/atoms/heading-two";
-import { MenuItem } from "../components/molecules/menu-item";
-import { menu } from "../mocks/data";
-import { HeadingThree } from "../components/atoms/heading-three";
-import { ProfileCard } from "../components/molecules/profile_card";
-import { HeadingFour } from "../components/atoms/heading-four";
-import { Section } from "../components/organisms/section";
-import { Box } from "../components/organisms/box";
-import { BestDishes } from "../components/molecules/best-dishes";
-import { EditModal } from "../components/molecules/edit-modal";
-import { RegisterModal } from "../components/molecules/register-modal";
+import React, { useState, useEffect } from 'react'
+import { IoMdDownload } from 'react-icons/io'
+import { FaPlusCircle } from 'react-icons/fa'
+import { Button } from '../components/atoms/button'
+import { View } from '../components/organisms/view'
+import { NavBar } from '../components/organisms/navbar'
+import { Card } from '../components/organisms/card'
+import { HeadingOne } from '../components/atoms/heading-one'
+import { HeadingTwo } from '../components/atoms/heading-two'
+import { MenuItem } from '../components/molecules/menu-item'
+import { HeadingThree } from '../components/atoms/heading-three'
+import { ProfileCard } from '../components/molecules/profile-card'
+import { HeadingFour } from '../components/atoms/heading-four'
+import { Section } from '../components/organisms/section'
+import { Box } from '../components/organisms/box'
+import { BestDishes } from '../components/molecules/best-dishes'
+import { RegisterModal } from '../components/molecules/register-modal'
+import { checkToken } from '../actions/check-token'
+import { getPratos } from '../services/get-pratos'
+import { getTopPratos } from '../services/get-top-pratos'
+import { getTopAtendentes } from '../services/get-top-atendentes'
+import { v4 as uuid } from 'uuid'
+
+interface Prato {
+  id: string;
+  nome: string;
+  descricao: string;
+}
 
 export default function HomePage() {
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [items, setItems] = useState<Prato[]>([])
+  const [topPratos, setTopPratos] = useState([])
+  const [topAtendentes, setTopAtendentes] = useState([])
 
-  const [openModal, setOpenModal] = useState(false)
+  useEffect(() => {
+    checkToken()
+    fetchItems()
+  }, [])
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
-  };
+  const fetchItems = async () => {
+    try {
+      const pratos: Prato[] = await getPratos()
+      const topPratos = await getTopPratos()
+      const topAtendentes = await getTopAtendentes()
 
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
+      setItems(pratos)
+      setTopPratos(topPratos)
+      setTopAtendentes(topAtendentes)
+    } catch (error) {
+      console.error('Erro ao obter dados:', error)
+    }
+  }
 
+  const handleModalStateChange = () => {
+    setIsOpenModal((prev) => !prev)
+    fetchItems()
+  }
+
+  const handleItemRemoval = (itemIdToRemove: string) =>
+    setItems(items.filter((item) => item.id !== itemIdToRemove))
 
   return (
-    <>
-      <View>
-        <NavBar />
-        <div className="flex items-center justify-between">
-          <HeadingOne>Dashboard</HeadingOne>
-          <div className="w-64">
-            <Button
-              variant="primary"
-              action={() => alert("relatório gerado")}
-            >
-              Gerar relatório
-              <IoMdDownload size={22} />
-            </Button>
-          </div>
+    <View>
+      <NavBar />
+      <div className="flex items-center justify-between">
+        <HeadingOne>Dashboard</HeadingOne>
+        <div className="w-64">
+          <Button
+            variant="primary"
+            action={() => console.log('relatório gerado')}
+          >
+            Gerar relatório
+            <IoMdDownload size={22} />
+          </Button>
         </div>
-        <Section>
+      </div>
+      <Section>
+        <Card>
+          <div className="flex items-center justify-between">
+            <HeadingTwo>Cardápio de hoje</HeadingTwo>
+            <div className="w-40">
+              <Button variant="primary" action={handleModalStateChange}>
+                <FaPlusCircle />
+                Registrar item
+              </Button>
+              {isOpenModal && (
+                <RegisterModal
+                  title="Registrar Item"
+                  isOpen={isOpenModal}
+                  onClose={handleModalStateChange}
+                />
+              )}
+            </div>
+          </div>
+          <div>
+            <div className="font-semibold flex my-4">
+              <div className="w-[calc(50%+16px)]">
+                <span>Item</span>
+              </div>
+              <div>
+                <span>Ingredientes</span>
+              </div>
+            </div>
+            {items.map((prato) => (
+              <MenuItem
+                prato={prato.nome}
+                ingredientes={prato.descricao}
+                key={prato.id}
+                id={prato.id}
+                onItemRemoval={handleItemRemoval}
+              />
+            ))}
+          </div>
+        </Card>
+        <Box>
           <Card>
-            <div className="flex items-center justify-between">
-              <HeadingTwo>Cardápio de hoje</HeadingTwo>
-              <div className="w-40">
-                <Button
-                  variant="primary"
-                  action={handleOpenModal}
-                >
-                  <FaPlusCircle />
-                  Registrar item
-                </Button>
-
-                {openModal && (
-                  <RegisterModal title="Registrar Item" isOpen={openModal} onClose={handleCloseModal} apiURL="https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/itens/create" />
-                )}
-
-              </div>
-            </div>
-            <div>
-              <div className="font-semibold flex mb-2">
-                <div className="w-[calc(50%+16px)]">
-                  <span>Item</span>
-                </div>
-                <div>
-                  <span>Ingredientes</span>
-                </div>
-              </div>
-              {menu.map((prato) => (
-                <MenuItem prato={prato.nome} ingredientes={prato.descricao} />
-              ))}
-            </div>
+            <HeadingThree>Top atendentes</HeadingThree>
+            {topAtendentes.map((atendente) => (
+              <ProfileCard
+                name={atendente.nome}
+                role={atendente.cargo}
+                key={atendente.nome}
+              />
+            
+            ))}
           </Card>
-          <Box>
-            <Card>
-              <HeadingThree>Top atendentes</HeadingThree>
-              <ProfileCard
-                name={"Amanda Souza"}
-                role={"Creative Director"}
-              ></ProfileCard>
-              <ProfileCard
-                name={"Leandro Félix"}
-                role={"Creative Director"}
-              ></ProfileCard>
-              <ProfileCard
-                name={"Bruno Oliveira"}
-                role={"Creative Director"}
-              ></ProfileCard>
-            </Card>
-            <Card>
-              <HeadingFour>Pratos mais vendidos</HeadingFour>
+          <Card>
+            <HeadingFour>Pratos mais vendidos</HeadingFour>
+            {topPratos.map((prato) => (
               <BestDishes
-                name={"Macarrão"}
-                role={"123 Pratos"}
-              ></BestDishes>
-              <BestDishes
-                name={"Arroz "}
-                role={"200 Pratos"}
-              ></BestDishes>
-              <BestDishes
-                name={"Lasanha"}
-                role={"300 Pratos"}
-              ></BestDishes>
-            </Card>
-          </Box>
-        </Section>
-      </View>
-    </>
-  );
+                name={prato.nome}
+                qtd={`${prato.quantidadeVendas} pratos`}
+                key={uuid()}
+              />
+            ))}
+          </Card>
+        </Box>
+      </Section>
+    </View>
+  )
 }

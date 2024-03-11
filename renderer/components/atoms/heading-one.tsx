@@ -4,7 +4,7 @@ interface HeadingOneProps {
 
 function HeadingOne ({ children }: HeadingOneProps) {
   return (
-    <h2 className="text-3xl font-bold text-slate_900 my-10 ml-8">{children}</h2>
+    <h2 className="text-3xl font-bold text-slate_900">{children}</h2>
   )
 }
 

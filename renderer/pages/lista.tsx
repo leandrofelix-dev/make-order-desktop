@@ -1,74 +1,148 @@
-import React, { useState } from "react";
-import { IoMdDownload } from "react-icons/io";
-import { Button } from "../components/atoms/button";
-import { View } from "../components/organisms/view";
-import { NavBar } from "../components/organisms/navbar";
-import { HeadingOne } from "../components/atoms/heading-one";
-import { SearchBar } from "../components/atoms/search-bar";
-import { Section } from "../components/organisms/section";
-import { Card } from "../components/organisms/card";
-import { ButtonList } from "../components/molecules/button-list";
-import { FaPlusCircle } from "react-icons/fa";
-import { HeadingThree } from "../components/atoms/heading-three";
-import { HeadingFour } from "../components/atoms/heading-four";
-import { OrderItem } from "../components/molecules/order-item ";
-import { pedido } from "../mocks/data";
-import { RegisterModal } from "../components/molecules/register-modal";
+import React, { useEffect, useState } from 'react'
+import { FaPlusCircle } from 'react-icons/fa'
+import { checkToken } from '../actions/check-token'
+import { deletePedido } from '../services/delete-pedidos'
+import { getPedidos } from '../services/get-pedidos'
+import { atualizaStatusPedido } from '../services/atualizar-status-pedido'
+import { Button } from '../components/atoms/button'
+import { ButtonList } from '../components/molecules/button-list'
+import { Card } from '../components/organisms/card'
+import { NavBar } from '../components/organisms/navbar'
+import { Section } from '../components/organisms/section'
+import { HeadingOne } from '../components/atoms/heading-one'
+import { SearchBar } from '../components/atoms/search-bar'
+import { View } from '../components/organisms/view'
+import { OrderItem } from '../components/molecules/order-item '
+import { CriarPedidoModal } from '../components/molecules/criar-pedidos-modal'
+import { getPratos } from '../services/get-pratos'
+import { getFuncionarios } from '../services/get-funcionarios'
 
 export default function Lista() {
+  checkToken()
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [activeButtonIndex, setActiveButtonIndex] = useState(0)
+  const [pedidos, setPedidos] = useState([])
+  const [pratos, setPratos] = useState([])
+  const [funcionarios, setFuncionarios] = useState([])
 
-  const [openRegisterModal, setOpenRegisterModal] = useState(false)
+  const fetchDados = async () => {
+    try {
+      const pratos = await getPratos()
+      const pedidos = await getPedidos()
+      const funcionarios = await getFuncionarios()
 
-  const handleOpenModal = () => {
-    setOpenRegisterModal(true);
-  };
+      setPratos(pratos)
+      setPedidos(pedidos)
+      setFuncionarios(funcionarios)
+    } catch (error) {
+      console.error('Erro ao obter os dados:', error)
+    }
+  }
 
-  const handleCloseModal = () => {
-    setOpenRegisterModal(false);
-  };
+  useEffect(() => {
+    fetchDados()
+  }, [activeButtonIndex])
+
+  const handleModalStateChange = () => setIsOpenModal(prev => !prev)
+
+  const handleButtonListClick = index => {
+    setActiveButtonIndex(index)
+  setTimeout(fetchDados, 0)
+  }
+
+  const deletePedidoAndUpdateState = async id => {
+    try {
+      await deletePedido(id)
+      setPedidos(pedidos.filter(pedido => pedido.id !== id))
+    } catch (error) {
+      console.error('Erro ao excluir o pedido:', error)
+    }
+  }
+
+  const updatePedidoStatus = async id => {
+    try {
+      await atualizaStatusPedido(id)
+      fetchDados()
+    } catch (error) {
+      console.error('Erro ao atualizar o status do pedido:', error)
+    }
+  }
+
+  const filterPedidosByStatus = (pedidos, status) => {
+    switch (status) {
+      case 0:
+        return pedidos.filter(pedido => pedido.status_pedido === 'PENDENTE')
+      case 1:
+        return pedidos.filter(pedido => pedido.status_pedido === 'CONFIRMADO')
+      case 2:
+        return pedidos.filter(pedido => pedido.status_pedido === 'CONCLUIDO')
+      default:
+        return pedidos
+    }
+  }
+
+  const filteredPedidos = filterPedidosByStatus(pedidos, activeButtonIndex)
 
   return (
-    <>
-      <View>
-        <NavBar />
-        <div className="flex items-center justify-between">
-          <HeadingOne>Lista de pedidos</HeadingOne>
-          <div className="w-64">
-            <SearchBar />
-          </div>
+    <View>
+      <NavBar />
+      <div className="flex items-center justify-between">
+        <HeadingOne>Lista de pedidos</HeadingOne>
+        <div className="w-64">
+          <SearchBar />
         </div>
-        <div className="flex items-center justify-between" >
-          <ButtonList />
-          <div className="w-64">
-            <Button
-              variant="primary"
-              action={handleOpenModal}
-            >
-              <FaPlusCircle />
-              Registrar pedido
-            </Button>
-            {openRegisterModal && (
-              <RegisterModal title="Registrar pedido" isOpen={openRegisterModal} onClose={handleCloseModal} apiURL="https://make-order-api-98b5f8f0c48a.herokuapp.com/api/v1.0/pedidos/create" />
-            )}
-          </div>
+      </div>
+      <div className="flex items-center justify-between my-8">
+        <ButtonList active={activeButtonIndex} onItemClick={handleButtonListClick} />
+        <div className="w-64">
+          <Button variant="primary" action={handleModalStateChange}>
+            <FaPlusCircle />
+            Registrar pedido
+          </Button>
+          {isOpenModal && (
+            <CriarPedidoModal
+              title="Registrar pedido"
+              isOpen={isOpenModal}
+              onClose={handleModalStateChange}
+              user={undefined}
+              atendentes={funcionarios}
+              pratos={pratos}
+            />
+          )}
         </div>
-        <Section>
-          <Card>
-            <div className="flex items-center justify-stretch font-semibold p-2 mb-2 gap-14">
-              <span>Item</span>
-              <span>Atendente</span>
-              <span>Data</span>
-              <span>Código</span>
-              <span>Preço do prato</span>
-              <span>Mesa</span>
-              <span>Observação</span>
-            </div>
-            {pedido.map((item) => (
-              <OrderItem item={item.item} atendente={item.atendente} data={item.data} codigo={item.codigo} preco={item.preco} mesa={item.mesa} observacao={item.observacao}></OrderItem>
+      </div>
+      <Section>
+        <Card>
+          <div className="flex items-center justify-stretch font-semibold gap-2 p-4">
+            <div className="w-full">Item</div>
+            <div className="w-full">Atendente</div>
+            <div className="w-full">Data</div>
+            <div className="w-full">Código</div>
+            <div className="w-full">Preço</div>
+            <div className="w-full">Mesa</div>
+            <div className="w-full">Observação</div>
+            <div className="h-7 w-[700px]"></div>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            {filteredPedidos.map(element => (
+              <OrderItem
+                item={element.itens[0].nome}
+                atendente={element.funcionario}
+                data={element.data}
+                codigo={element.codigo}
+                preco={`R$ ${parseFloat(element.itens[0].preco).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}
+                mesa={element.mesa}
+                observacao={element.itens[0].descricao}
+                id={element.id}
+                deletePedidos={deletePedidoAndUpdateState}
+                atualizaStatusPedido={updatePedidoStatus}
+                key={element.id}
+              />
             ))}
-          </Card>
-        </Section>
-      </View>
-    </>
-  );
+          </div>
+        </Card>
+      </Section>
+    </View>
+  )
 }

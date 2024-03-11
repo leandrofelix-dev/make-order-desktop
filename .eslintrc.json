@@ -1,7 +1,0 @@
-{
-  "overrides": [
-    {
-      "files": ["renderer/components/**/*.tsx"]
-    }
-  ]
-}
