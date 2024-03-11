@@ -14,31 +14,40 @@ import { SearchBar } from '../components/atoms/search-bar'
 import { View } from '../components/organisms/view'
 import { OrderItem } from '../components/molecules/order-item '
 import { CriarPedidoModal } from '../components/molecules/criar-pedidos-modal'
+import { getPratos } from '../services/get-pratos'
+import { getFuncionarios } from '../services/get-funcionarios'
 
 export default function Lista() {
   checkToken()
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [activeButtonIndex, setActiveButtonIndex] = useState(0)
   const [pedidos, setPedidos] = useState([])
+  const [pratos, setPratos] = useState([])
+  const [funcionarios, setFuncionarios] = useState([])
 
-  const fetchPedidos = async () => {
+  const fetchDados = async () => {
     try {
-      const data = await getPedidos()
-      setPedidos(data)
+      const pratos = await getPratos()
+      const pedidos = await getPedidos()
+      const funcionarios = await getFuncionarios()
+
+      setPratos(pratos)
+      setPedidos(pedidos)
+      setFuncionarios(funcionarios)
     } catch (error) {
-      console.error('Erro ao obter os pedidos:', error)
+      console.error('Erro ao obter os dados:', error)
     }
   }
 
   useEffect(() => {
-    fetchPedidos()
+    fetchDados()
   }, [activeButtonIndex])
 
   const handleModalStateChange = () => setIsOpenModal(prev => !prev)
 
   const handleButtonListClick = index => {
     setActiveButtonIndex(index)
-    fetchPedidos()
+  setTimeout(fetchDados, 0)
   }
 
   const deletePedidoAndUpdateState = async id => {
@@ -53,7 +62,7 @@ export default function Lista() {
   const updatePedidoStatus = async id => {
     try {
       await atualizaStatusPedido(id)
-      fetchPedidos()
+      fetchDados()
     } catch (error) {
       console.error('Erro ao atualizar o status do pedido:', error)
     }
@@ -96,6 +105,8 @@ export default function Lista() {
               isOpen={isOpenModal}
               onClose={handleModalStateChange}
               user={undefined}
+              atendentes={funcionarios}
+              pratos={pratos}
             />
           )}
         </div>

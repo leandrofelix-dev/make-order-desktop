@@ -17,9 +17,11 @@ interface Item {
 }
 
 interface Atendente {
+  id: string;
   nome: string;
+  email: string;
+  dataNascimento: number
   cargo: string;
-  vendas: number;
 }
 
 interface CriarPedidoModalProps {
@@ -27,37 +29,17 @@ interface CriarPedidoModalProps {
   onClose: () => void;
   title: string;
   user: any;
+  pratos: Item[];
+  atendentes: Atendente[];
 }
 
-const itensMock: Item[] = [
-  {
-    id: '3cbc3be4-f5ba-4b2c-8826-7c2502946e05',
-    nome: 'Salada de Frutas',
-    preco: 9.50,
-    descricao: 'Seleção de frutas frescas da estação, cortadas em cubos e servidas com uma leve calda de mel e suco de laranja.',
-    quantidade: 25,
-    categoria: {
-      id: '2d6ba729-418e-44c8-8efb-2c6950b6dab7',
-      nome: 'bebida',
-    },
-  },
-]
-
-const funcionariosMock: Atendente[] = [
-  {
-    nome: 'ADMIN',
-    cargo: 'ADMINISTRADOR',
-    vendas: 18,
-  },
-]
-
-function CriarPedidoModal({ isOpen, onClose, title }: CriarPedidoModalProps) {
+function CriarPedidoModal({ isOpen, onClose, title, pratos, atendentes }: CriarPedidoModalProps) {
   const [pedido, setPedido] = useState<any>({
     id: '',
     data: new Date(),
     itens: [] as Item[],
     codigo: 0,
-    funcionario: null as Atendente | null,
+    funcionario: null as string | null,
     mesa: null,
     forma_pagamento: 'PIX',
     status_pedido: 'PENDENTE',
@@ -113,30 +95,29 @@ function CriarPedidoModal({ isOpen, onClose, title }: CriarPedidoModalProps) {
           <div className="w-full">
             <label className="block text-slate_700 font-semibold mb-2">Selecionar Item</label>
             <div className='flex justify-between'>
-            <select
-              className="bg-slate_100 border border-slate_300 rounded-md p-2 w-full focus:outline-none focus:border-primary"
-              value={selectedItem ? selectedItem.nome : ''}
-              onChange={(e) => {
-                const selected = itensMock.find((item) => item.nome === e.target.value)
-                setSelectedItem(selected || null)
-              }}
-            >
-              <option value="">Selecione um item</option>
-              {itensMock.map((item) => (
-                <option key={item.id} value={item.nome}>{item.nome}</option>
-              ))}
-            </select>
-            <div className="ml-4">
-            <Button
-              variant="primary"
-              action={handleAddItem}
-              disabled={!selectedItem}>
-              Adicionar
-            </Button>
-          </div>
+              <select
+                className="bg-slate_100 border border-slate_300 rounded-md p-2 w-full focus:outline-none focus:border-primary"
+                value={selectedItem ? selectedItem.nome : ''}
+                onChange={(e) => {
+                  const selected = pratos.find((item) => item.nome === e.target.value)
+                  setSelectedItem(selected || null)
+                }}
+              >
+                <option value="">Selecione um item</option>
+                {pratos.map((item) => (
+                  <option key={item.id} value={item.nome}>{item.nome}</option>
+                ))}
+              </select>
+              <div className="ml-4">
+                <Button
+                  variant="primary"
+                  action={handleAddItem}
+                  disabled={!selectedItem}>
+                  Adicionar
+                </Button>
+              </div>
             </div>
           </div>
-          
         </div>
         <div className="mb-4">
           <label className="block text-slate_700 font-semibold mb-2">Itens Selecionados</label>
@@ -150,17 +131,16 @@ function CriarPedidoModal({ isOpen, onClose, title }: CriarPedidoModalProps) {
           <label className="block text-slate_700 font-semibold mb-2">Selecionar Atendente</label>
           <select
             className="bg-slate_100 border border-slate_300 rounded-md p-2 w-full focus:outline-none focus:border-primary"
-            value={pedido.funcionario ? pedido.funcionario.nome : ''}
+            value={pedido.funcionario ? pedido.funcionario : ''}
             onChange={(e) => {
-              const selected = funcionariosMock.find((atendente) => atendente.nome === e.target.value)
               setPedido((prevPedido: any) => ({
                 ...prevPedido,
-                funcionario: selected || null,
+                funcionario: e.target.value,
               }))
             }}
           >
             <option value="">Selecione um atendente</option>
-            {funcionariosMock.map((atendente) => (
+            {atendentes.map((atendente) => (
               <option key={atendente.nome} value={atendente.nome}>{atendente.nome}</option>
             ))}
           </select>
