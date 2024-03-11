@@ -14,7 +14,7 @@ function ButtonList({ active, onItemClick }: ButtonListProps) {
   }
 
   const renderListItems = () => {
-    return ['Aguardando confirmação', 'Em preparo', 'Pronto', 'Concluído'].map(
+    return ['Aguardando confirmação', 'Em preparo', 'Concluído'].map(
       (label, index) => (
         <ListItem
           key={index}

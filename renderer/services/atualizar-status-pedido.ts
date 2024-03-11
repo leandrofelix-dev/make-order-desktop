@@ -1,29 +1,39 @@
 import { apiURL, http } from '../config/axios'
+import { getPedidos } from './get-pedidos'
 
-async function atualizaStatusPedido(id, pedido) {
-  const { preco, status_pedido, ...resto } = pedido
-
-  // Remove o símbolo de moeda e espaços em branco e substitui a vírgula por ponto
-  const precoNumerico = parseFloat(preco.replace(/[^\d,.]/g, '').replace(',', '.'))
-
-  // Define o status inicial como 0 (aguardando confirmação) se não estiver definido
-  let novoStatusPedido = status_pedido !== undefined ? status_pedido + 1 : 0
-
-  // Limita o status entre 0 e 3
-  novoStatusPedido = Math.min(Math.max(novoStatusPedido, 0), 3)
-
-  const newPedido = {
-    ...resto,
-    preco: precoNumerico,
-    status_pedido: novoStatusPedido,
-  }
-
+async function atualizaStatusPedido(id) {
   try {
+    const pedidos = await getPedidos()
+    const pedidoAtual = pedidos.find(p => p.id === id)
+
+    if (!pedidoAtual) {
+      throw new Error(`Pedido com o ID ${id} não encontrado.`)
+    }
+
+    const statusPedidos = ['PENDENTE', 'CONFIRMADO', 'CONCLUIDO']
+    const statusAtualIndex = statusPedidos.indexOf(pedidoAtual.status_pedido)
+
+    if (statusAtualIndex === -1) {
+      throw new Error(`Status '${pedidoAtual.status_pedido}' inválido.`)
+    }
+
+    const novoStatusIndex = (statusAtualIndex + 1) % 3
+    const novoStatus = statusPedidos[novoStatusIndex]
+
+    const newPedido = {
+      ...pedidoAtual,
+      status_pedido: novoStatus,
+    }
+
+    console.log('-', pedidoAtual)
+    console.log('+', newPedido)
+
     const response = await http.patch(`${apiURL}/api/v1.0/pedidos/update/status/${id}`, newPedido, {
       headers: {
         Authorization: localStorage.getItem('token'),
       },
     })
+
     return response.data
   } catch (error) {
     console.error('Erro ao atualizar status do pedido:', error)

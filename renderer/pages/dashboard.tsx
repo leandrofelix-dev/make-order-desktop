@@ -19,6 +19,7 @@ import { checkToken } from '../actions/check-token'
 import { getPratos } from '../services/get-pratos'
 import { getTopPratos } from '../services/get-top-pratos'
 import { getTopAtendentes } from '../services/get-top-atendentes'
+import { v4 as uuid } from 'uuid'
 
 interface Prato {
   id: string;
@@ -130,7 +131,7 @@ export default function HomePage() {
               <BestDishes
                 name={prato.nome}
                 qtd={`${prato.quantidadeVendas} pratos`}
-                key={prato.nome}
+                key={uuid()}
               />
             ))}
           </Card>

@@ -1,3 +1,4 @@
+// arquivo: pages/lista.tsx
 import React, { useEffect, useState } from 'react'
 import { FaPlusCircle } from 'react-icons/fa'
 import { checkToken } from '../actions/check-token'
@@ -8,12 +9,12 @@ import { Button } from '../components/atoms/button'
 import { ButtonList } from '../components/molecules/button-list'
 import { Card } from '../components/organisms/card'
 import { NavBar } from '../components/organisms/navbar'
-import { OrderItem } from '../components/molecules/order-item '
 import { RegisterModal } from '../components/molecules/register-modal'
 import { Section } from '../components/organisms/section'
 import { HeadingOne } from '../components/atoms/heading-one'
 import { SearchBar } from '../components/atoms/search-bar'
 import { View } from '../components/organisms/view'
+import { OrderItem } from '../components/molecules/order-item '
 
 export default function Lista() {
   checkToken()
@@ -34,32 +35,27 @@ export default function Lista() {
     fetchPedidos()
   }, [])
 
-  const handleModalStateChange = () => setIsOpenModal((prev) => !prev)
+  const handleModalStateChange = () => setIsOpenModal(prev => !prev)
 
-  const handleButtonListClick = (index) => {
+  const handleButtonListClick = index => {
     setActiveButtonIndex(index)
   }
 
-  const deletePedidoAndUpdateState = async (id) => {
+  const deletePedidoAndUpdateState = async id => {
     try {
       await deletePedido(id)
-      setPedidos((prevPedidos) => prevPedidos.filter((pedido) => pedido.id !== id))
+      setPedidos(pedidos)
     } catch (error) {
       console.error('Erro ao excluir o pedido:', error)
     }
   }
 
-  const updatePedidoStatus = async (id, pedido) => {
+  const updatePedidoStatus = async id => {
     try {
-      await atualizaStatusPedido(id, pedido)
-
-      const updatedPedidos = pedidos.map(p => {
-        if (p.id === id) {
-          return { ...p, status_pedido: pedido.status_pedido }
-        }
-        return p
-      })
-
+      await atualizaStatusPedido(id)
+      const updatedPedidos = [...pedidos]
+      const pedidoIndex = updatedPedidos.findIndex(pedido => pedido.id === id)
+      updatedPedidos[pedidoIndex] = await getPedidos()
       setPedidos(updatedPedidos)
     } catch (error) {
       console.error('Erro ao atualizar o status do pedido:', error)
@@ -67,14 +63,12 @@ export default function Lista() {
   }
 
   const filterPedidosByStatus = (pedidos, status) => {
-    switch(status) {
+    switch (status) {
       case 0:
-        return pedidos.filter(pedido => pedido.status_pedido === 'CONFIRMADO')
+        return pedidos.filter(pedido => pedido.status_pedido === 'PENDENTE')
       case 1:
-        return pedidos.filter(pedido => pedido.status_pedido === 'EM_PREPARO')
+        return pedidos.filter(pedido => pedido.status_pedido === 'CONFIRMADO')
       case 2:
-        return pedidos.filter(pedido => pedido.status_pedido === 'PRONTO')
-      case 3:
         return pedidos.filter(pedido => pedido.status_pedido === 'CONCLUIDO')
       default:
         return pedidos
@@ -122,7 +116,7 @@ export default function Lista() {
           </div>
 
           <div className="flex flex-col gap-2">
-            {filteredPedidos.map((element) => (
+            {filteredPedidos.map(element => (
               <OrderItem
                 item={element.itens[0].nome}
                 atendente={element.funcionario}
