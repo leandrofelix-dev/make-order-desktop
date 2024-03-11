@@ -3,7 +3,8 @@ import { apiURL, http } from '../config/axios'
 async function atualizaStatusPedido(id: string, pedido: any) {
   const newPedido = {
     ...pedido,
-    status: 3,
+    status_pedido: 1,
+    preco: 10
   }
 
   console.log('newPedido', newPedido)

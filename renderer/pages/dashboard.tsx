@@ -17,6 +17,7 @@ import { BestDishes } from '../components/molecules/best-dishes'
 import { RegisterModal } from '../components/molecules/register-modal'
 import { checkToken } from '../actions/check-token'
 import { getPratos } from '../services/get-pratos'
+import { getTopPratos } from '../services/get-top-pratos'
 
 interface Prato {
   id: string;
@@ -27,6 +28,7 @@ interface Prato {
 export default function HomePage() {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [items, setItems] = useState<Prato[]>([])
+  const [topPratos, setTopPratos] = useState([])
 
   useEffect(() => {
     checkToken()
@@ -36,7 +38,9 @@ export default function HomePage() {
   const fetchItems = async () => {
     try {
       const pratos: Prato[] = await getPratos()
+      const topPratos = await getTopPratos()
       setItems(pratos)
+      setTopPratos(topPratos)
     } catch (error) {
       console.error('Erro ao obter os pratos:', error)
     }
@@ -48,8 +52,7 @@ export default function HomePage() {
   }
 
   const handleItemRemoval = (itemIdToRemove: string) =>
-    setItems(items.filter(item => item.id !== itemIdToRemove))
-
+    setItems(items.filter((item) => item.id !== itemIdToRemove))
 
   return (
     <View>
@@ -57,7 +60,10 @@ export default function HomePage() {
       <div className="flex items-center justify-between">
         <HeadingOne>Dashboard</HeadingOne>
         <div className="w-64">
-          <Button variant="primary" action={() => console.log('relatório gerado')}>
+          <Button
+            variant="primary"
+            action={() => console.log('relatório gerado')}
+          >
             Gerar relatório
             <IoMdDownload size={22} />
           </Button>
@@ -104,10 +110,7 @@ export default function HomePage() {
         <Box>
           <Card>
             <HeadingThree>Top atendentes</HeadingThree>
-            <ProfileCard
-              name={'Amanda Souza'}
-              role={'Atendente'}
-            ></ProfileCard>
+            <ProfileCard name={'Amanda Souza'} role={'Atendente'}></ProfileCard>
             <ProfileCard
               name={'Leandro Félix'}
               role={'Atendente'}
@@ -119,9 +122,13 @@ export default function HomePage() {
           </Card>
           <Card>
             <HeadingFour>Pratos mais vendidos</HeadingFour>
-            <BestDishes name={'Macarrão'} role={'123 Pratos'}></BestDishes>
-            <BestDishes name={'Arroz '} role={'200 Pratos'}></BestDishes>
-            <BestDishes name={'Lasanha'} role={'300 Pratos'}></BestDishes>
+            {topPratos.map((prato) => (
+              <BestDishes
+                name={prato.nome}
+                qtd={`${prato.quantidadeVendas} pratos`}
+                key={prato.nome}
+              />
+            ))}
           </Card>
         </Box>
       </Section>
