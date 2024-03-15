@@ -12,7 +12,10 @@ import { CriarPedidoModal } from '../components/molecules/criar-pedidos-modal'
 import { getFuncionarios } from '../services/get-funcionarios'
 import { getPedidos } from '../services/get-pedidos'
 import { getPratos } from '../services/get-pratos'
-import { deletePedido } from '../services/delete-pedidos' // Importe a função deletePedido
+import { deletePedido } from '../services/delete-pedidos'
+
+// Importe a função atualizaStatusPedido
+import { atualizaStatusPedido } from '../services/atualizar-status-pedido'
 
 export default function Quadro() {
   useEffect(() => {
@@ -59,10 +62,9 @@ export default function Quadro() {
 
   const handleModalStateChange = () => setIsOpenModal(!isOpenModal)
 
-  // Função para remover o pedido
   const removePedido = async (id) => {
     try {
-      await deletePedido(id) // Chama a função deletePedido
+      await deletePedido(id)
       setOrders((prevOrders) => {
         const updatedOrders = { ...prevOrders }
         Object.keys(updatedOrders).forEach((key) => {
@@ -75,28 +77,29 @@ export default function Quadro() {
     }
   }
 
-  const onDragEnd = (result) => {
+  // Função para atualizar o status do pedido quando arrastado e solto
+  const onDragEnd = async (result) => {
     if (!result.destination) return
-    const { source, destination } = result
+    const { source, destination, draggableId } = result
+    if (source.droppableId === destination.droppableId) return
+
     const sourceColumn = orders[source.droppableId]
     const destColumn = orders[destination.droppableId]
-    const sourceIndex = source.index
-    const destIndex = destination.index
-    const movedItem = sourceColumn[sourceIndex]
+    const movedItem = sourceColumn.find((pedido) => pedido.id === draggableId)
 
-    sourceColumn.splice(sourceIndex, 1)
+    if (!movedItem) return
 
-    destColumn.splice(destIndex, 0, movedItem)
-
-    setOrders({
-      ...orders,
-      [source.droppableId]: [...sourceColumn],
-      [destination.droppableId]: [...destColumn],
-    })
-
-    // Atualizar o status do pedido na API
-    // Implementar a lógica para atualizar o status do pedido na API
-    // Por exemplo: atualizaStatusPedido(movedItem.id, destination.droppableId)
+    try {
+      await atualizaStatusPedido(movedItem.id)
+      setOrders((prevOrders) => {
+        const updatedOrders = { ...prevOrders }
+        updatedOrders[source.droppableId] = sourceColumn.filter((pedido) => pedido.id !== draggableId)
+        updatedOrders[destination.droppableId] = [...destColumn, movedItem]
+        return updatedOrders
+      })
+    } catch (error) {
+      console.error('Erro ao atualizar o status do pedido:', error)
+    }
   }
 
   const truncateDescription = (description, maxLength) => {
@@ -158,7 +161,7 @@ export default function Quadro() {
                                 )}
                                 mesa={`Mesa ${pedido.mesa.numero.toString().padStart(2, '0')}`}
                                 id={`#P${pedido.codigo.toString().padStart(3, '0')}`}
-                                onDelete={() => removePedido(pedido.id)} // Passa a função removePedido para o componente filho
+                                onDelete={() => removePedido(pedido.id)}
                               />
                             </div>
                           )}
@@ -192,4 +195,3 @@ export default function Quadro() {
     </DragDropContext>
   )
 }
-

@@ -6,7 +6,7 @@ interface KBCardProps {
   descricao: string;
   mesa: string;
   id: string;
-  onDelete: () => void;
+  onDelete: () => void; // Adicionado prop para lidar com a exclusão do pedido
 }
 
 function KBCard({ title, descricao, mesa, id, onDelete }: KBCardProps) {
