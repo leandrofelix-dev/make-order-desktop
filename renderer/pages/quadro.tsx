@@ -16,14 +16,14 @@ import { getPratos } from '../services/get-pratos'
 
 export default function Quadro() {
   useEffect(() => {
-    checkToken() // Movido para dentro do useEffect
-  }, []) // Adicionado array de dependências vazio para garantir que seja chamado apenas uma vez
+    checkToken()
+  }, [])
 
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [orders, setOrders] = useState({
-    'PENDENTE': [],
-    'CONFIRMADO': [],
-    'CONCLUIDO': [],
+    PENDENTE: [],
+    CONFIRMADO: [],
+    CONCLUIDO: [],
   })
   const [pratos, setPratos] = useState([])
   const [funcionarios, setFuncionarios] = useState([])
@@ -39,12 +39,12 @@ export default function Quadro() {
         setFuncionarios(funcionariosData)
 
         const formattedOrders = {
-          'PENDENTE': [],
-          'CONFIRMADO': [],
-          'CONCLUIDO': [],
+          PENDENTE: [],
+          CONFIRMADO: [],
+          CONCLUIDO: [],
         }
 
-        pedidosData.forEach(pedido => {
+        pedidosData.forEach((pedido) => {
           formattedOrders[pedido.status_pedido].push(pedido)
         })
 
@@ -59,7 +59,7 @@ export default function Quadro() {
 
   const handleModalStateChange = () => setIsOpenModal(!isOpenModal)
 
-  const onDragEnd = result => {
+  const onDragEnd = (result) => {
     if (!result.destination) return
     const { source, destination } = result
     const sourceColumn = orders[source.droppableId]
@@ -68,10 +68,8 @@ export default function Quadro() {
     const destIndex = destination.index
     const movedItem = sourceColumn[sourceIndex]
 
-    // Remover da lista de origem
     sourceColumn.splice(sourceIndex, 1)
 
-    // Adicionar na lista de destino
     destColumn.splice(destIndex, 0, movedItem)
 
     setOrders({
@@ -81,12 +79,14 @@ export default function Quadro() {
     })
 
     // Atualizar o status do pedido na API
-    // Você precisa implementar a lógica para atualizar o status do pedido na API
+    // Implementar a lógica para atualizar o status do pedido na API
     // Por exemplo: atualizaStatusPedido(movedItem.id, destination.droppableId)
   }
 
   const truncateDescription = (description, maxLength) => {
-    return description.length > maxLength ? `${description.slice(0, maxLength)}...` : description
+    return description.length > maxLength
+      ? `${description.slice(0, maxLength)}...`
+      : description
   }
 
   return (
@@ -122,10 +122,10 @@ export default function Quadro() {
                           : 'p-2 rounded-lg'
                       }
                     >
-                      {orders[key]?.map((item, index) => (
+                      {orders[key]?.map((pedido, index) => (
                         <Draggable
-                          key={item.id}
-                          draggableId={item.id}
+                          key={pedido.id}
+                          draggableId={pedido.id}
                           index={index}
                         >
                           {(provided, snapshot) => (
@@ -138,10 +138,13 @@ export default function Quadro() {
                               }`}
                             >
                               <KBCard
-                                title={item.itens[0]?.nome}
-                                descricao={truncateDescription(item.itens[0]?.descricao, 20)}
-                                mesa={item.mesa}
-                                id={item.id}
+                                title={pedido.itens[0]?.nome}
+                                descricao={truncateDescription(
+                                  pedido.itens[0]?.descricao,
+                                  20
+                                )}
+                                mesa={`Mesa ${pedido.mesa.numero.toString().padStart(2, '0')}`}
+                                id={`#P${pedido.codigo.toString().padStart(3, '0')}`}
                               />
                             </div>
                           )}

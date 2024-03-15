@@ -43,23 +43,23 @@ export default function Lista() {
     fetchDados()
   }, [activeButtonIndex])
 
-  const handleModalStateChange = () => setIsOpenModal(prev => !prev)
+  const handleModalStateChange = () => setIsOpenModal((prev) => !prev)
 
-  const handleButtonListClick = index => {
+  const handleButtonListClick = (index) => {
     setActiveButtonIndex(index)
-  setTimeout(fetchDados, 0)
+    setTimeout(fetchDados, 0)
   }
 
-  const deletePedidoAndUpdateState = async id => {
+  const deletePedidoAndUpdateState = async (id) => {
     try {
       await deletePedido(id)
-      setPedidos(pedidos.filter(pedido => pedido.id !== id))
+      setPedidos(pedidos.filter((pedido) => pedido.id !== id))
     } catch (error) {
       console.error('Erro ao excluir o pedido:', error)
     }
   }
 
-  const updatePedidoStatus = async id => {
+  const updatePedidoStatus = async (id) => {
     try {
       await atualizaStatusPedido(id)
       fetchDados()
@@ -71,11 +71,13 @@ export default function Lista() {
   const filterPedidosByStatus = (pedidos, status) => {
     switch (status) {
       case 0:
-        return pedidos.filter(pedido => pedido.status_pedido === 'PENDENTE')
+        return pedidos.filter((pedido) => pedido.status_pedido === 'PENDENTE')
       case 1:
-        return pedidos.filter(pedido => pedido.status_pedido === 'CONFIRMADO')
+        return pedidos.filter(
+          (pedido) => pedido.status_pedido === 'CONFIRMADO'
+        )
       case 2:
-        return pedidos.filter(pedido => pedido.status_pedido === 'CONCLUIDO')
+        return pedidos.filter((pedido) => pedido.status_pedido === 'CONCLUIDO')
       default:
         return pedidos
     }
@@ -93,7 +95,10 @@ export default function Lista() {
         </div>
       </div>
       <div className="flex items-center justify-between my-8">
-        <ButtonList active={activeButtonIndex} onItemClick={handleButtonListClick} />
+        <ButtonList
+          active={activeButtonIndex}
+          onItemClick={handleButtonListClick}
+        />
         <div className="w-64">
           <Button variant="primary" action={handleModalStateChange}>
             <FaPlusCircle />
@@ -125,20 +130,20 @@ export default function Lista() {
           </div>
 
           <div className="flex flex-col gap-2">
-            {filteredPedidos.map(element => (
+            {filteredPedidos.map((pedido) => (
               <OrderItem
-                item={element.itens[0].nome}
-                atendente={element.funcionario}
-                data={element.data}
-                codigo={element.codigo}
-                preco={`R$ ${parseFloat(element.itens[0].preco).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}
-                mesa={element.mesa}
-                observacao={element.itens[0].descricao}
-                id={element.id}
-                deletePedidos={deletePedidoAndUpdateState}
-                atualizaStatusPedido={updatePedidoStatus}
-                key={element.id}
-              />
+              key={pedido.id}
+              item={pedido.itens.length > 0 ? pedido.itens[0].nome : ''}
+              atendente={pedido.funcionario.nome}
+              data={pedido.data || new Date().toLocaleDateString()}
+              codigo={`#P${pedido.codigo.toString().padStart(3, '0')}`}
+              preco={`R$ ${parseFloat(pedido.itens.length > 0 ? pedido.itens[0].preco : 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+              mesa={`Mesa ${pedido.mesa.numero.toString().padStart(2, '0')}`}
+              observacao={pedido.itens.length > 0 ? pedido.itens[0].descricao : ''}
+              id={pedido.id}
+              deletePedidos={deletePedidoAndUpdateState}
+              atualizaStatusPedido={updatePedidoStatus}
+            />
             ))}
           </div>
         </Card>

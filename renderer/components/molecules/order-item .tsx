@@ -36,7 +36,7 @@ function OrderItem({
         <span className="text-slate_700 text-sm font-semibold w-full">{data}</span>
         <b className=" w-full">{codigo}</b>
         <b className=" w-full">{preco}</b>
-        <span className="text-slate_700 text-sm font-semibold w-full">{mesa}</span>
+        <div className='w-full px-4'><span className="text-slate_700 border-slate_500 text-sm font-bold w-full rounded-full p-1 border-2 flex items-center justify-center">{mesa}</span></div>
         <span className="text-slate_700 text-sm font-semibold w-full">{observacao ? observacao.substring(0, 32) : ''}...</span>
       </div>
       <div className="px-2 bg-danger hover:bg-danger_hover h-[72px] flex items-center rounded text-slate_50 cursor-pointer">
