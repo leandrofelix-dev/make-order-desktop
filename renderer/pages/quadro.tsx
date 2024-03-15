@@ -14,7 +14,6 @@ import { getPedidos } from '../services/get-pedidos'
 import { getPratos } from '../services/get-pratos'
 import { deletePedido } from '../services/delete-pedidos'
 
-// Importe a função atualizaStatusPedido
 import { atualizaStatusPedido } from '../services/atualizar-status-pedido'
 
 export default function Quadro() {

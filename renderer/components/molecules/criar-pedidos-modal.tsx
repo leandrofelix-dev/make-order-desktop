@@ -39,7 +39,7 @@ function CriarPedidoModal({ isOpen, onClose, title, pratos, atendentes }: CriarP
     data: new Date(),
     itens: [] as Item[],
     codigo: 0,
-    funcionario: null as string | null,
+    funcionario: '', // Alterado para string
     mesa: null,
     forma_pagamento: 'PIX',
     status_pedido: 'PENDENTE',
@@ -61,15 +61,20 @@ function CriarPedidoModal({ isOpen, onClose, title, pratos, atendentes }: CriarP
 
   const handleRegistrarPedido = async () => {
     try {
-      console.log('Pedido:', pedido)
       const response = await criarPedido(pedido)
-
       console.log('Pedido registrado:', response)
-
       onClose()
     } catch (error) {
       console.error('Erro ao registrar pedido:', error)
     }
+  }
+
+  const handleRemoveItem = (itemId: string) => {
+    const updatedItems = pedido.itens.filter((item: Item) => item.id !== itemId)
+    setPedido((prevPedido: any) => ({
+      ...prevPedido,
+      itens: updatedItems,
+    }))
   }
 
   const handleCloseModal = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -79,17 +84,11 @@ function CriarPedidoModal({ isOpen, onClose, title, pratos, atendentes }: CriarP
   }
 
   return (
-    <div
-      className={`fixed top-0 left-0 w-full h-full flex items-center justify-center bg-slate_900 bg-opacity-60 z-50 ${isOpen ? '' : 'hidden'}`}
-      onClick={handleCloseModal}
-    >
+    <div className={`fixed top-0 left-0 w-full h-full flex items-center justify-center bg-slate_900 bg-opacity-60 z-50 ${isOpen ? '' : 'hidden'}`} onClick={handleCloseModal}>
       <div className="bg-slate_200 rounded-lg p-8 shadow-xl w-full max-w-md">
         <div className="flex items-center justify-between mb-4">
           <HeadingOne>{title}</HeadingOne>
-          <RiCloseFill
-            className="text-2xl text-slate_900 hover:text-danger cursor-pointer"
-            onClick={onClose}
-          />
+          <RiCloseFill className="text-2xl text-slate_900 hover:text-danger cursor-pointer" onClick={onClose} />
         </div>
         <div className="mb-4 flex items-center justify-between">
           <div className="w-full">
@@ -123,7 +122,10 @@ function CriarPedidoModal({ isOpen, onClose, title, pratos, atendentes }: CriarP
           <label className="block text-slate_700 font-semibold mb-2">Itens Selecionados</label>
           <ul className="list-disc list-inside">
             {pedido.itens.map((item: Item) => (
-              <li key={item.id}>{item.nome}</li>
+              <li key={item.id} className="flex justify-between">
+                <span>{item.nome}</span>
+                <RiCloseFill className="text-slate_900 cursor-pointer" onClick={() => handleRemoveItem(item.id)} />
+              </li>
             ))}
           </ul>
         </div>
@@ -135,13 +137,13 @@ function CriarPedidoModal({ isOpen, onClose, title, pratos, atendentes }: CriarP
             onChange={(e) => {
               setPedido((prevPedido: any) => ({
                 ...prevPedido,
-                funcionario: e.target.value,
+                funcionario: e.target.value, // Alterado para pegar o valor do ID do atendente
               }))
             }}
           >
             <option value="">Selecione um atendente</option>
             {atendentes.map((atendente) => (
-              <option key={atendente.nome} value={atendente.nome}>{atendente.nome}</option>
+              <option key={atendente.id} value={atendente.id}>{atendente.nome}</option> // Alterado para passar o ID
             ))}
           </select>
         </div>
