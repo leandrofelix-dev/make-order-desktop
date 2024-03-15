@@ -75,8 +75,7 @@ export default function Login() {
             <div className="flex flex-col items-center">
               <span>Não tem cadastro? </span>
               <div className="text-primary flex flex-col items-center">
-                <Link href="/register">Registre-se</Link>
-                <Link href="/recuperar">Recuperar senha</Link>
+                <Link href="/conta/register">Registre-se</Link>
               </div>
             </div>
           </div>

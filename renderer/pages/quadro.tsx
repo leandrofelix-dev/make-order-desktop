@@ -3,7 +3,6 @@ import { FaPlusCircle } from 'react-icons/fa'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { checkToken } from '../actions/check-token'
 import { HeadingOne } from '../components/atoms/heading-one'
-import { SearchBar } from '../components/atoms/search-bar'
 import { KBCard } from '../components/organisms/kb-card'
 import { NavBar } from '../components/organisms/navbar'
 import { Section } from '../components/organisms/section'
@@ -13,6 +12,7 @@ import { CriarPedidoModal } from '../components/molecules/criar-pedidos-modal'
 import { getFuncionarios } from '../services/get-funcionarios'
 import { getPedidos } from '../services/get-pedidos'
 import { getPratos } from '../services/get-pratos'
+import { deletePedido } from '../services/delete-pedidos' // Importe a função deletePedido
 
 export default function Quadro() {
   useEffect(() => {
@@ -59,6 +59,22 @@ export default function Quadro() {
 
   const handleModalStateChange = () => setIsOpenModal(!isOpenModal)
 
+  // Função para remover o pedido
+  const removePedido = async (id) => {
+    try {
+      await deletePedido(id) // Chama a função deletePedido
+      setOrders((prevOrders) => {
+        const updatedOrders = { ...prevOrders }
+        Object.keys(updatedOrders).forEach((key) => {
+          updatedOrders[key] = updatedOrders[key].filter((pedido) => pedido.id !== id)
+        })
+        return updatedOrders
+      })
+    } catch (error) {
+      console.error('Erro ao excluir o pedido:', error)
+    }
+  }
+
   const onDragEnd = (result) => {
     if (!result.destination) return
     const { source, destination } = result
@@ -95,9 +111,6 @@ export default function Quadro() {
         <NavBar />
         <div className="flex items-center justify-between">
           <HeadingOne>Quadro de pedidos</HeadingOne>
-          <div className="w-64">
-            <SearchBar />
-          </div>
         </div>
         <Section>
           <div className="bg-slate_200 flex p-6 rounded-xl items-start justify-between">
@@ -145,6 +158,7 @@ export default function Quadro() {
                                 )}
                                 mesa={`Mesa ${pedido.mesa.numero.toString().padStart(2, '0')}`}
                                 id={`#P${pedido.codigo.toString().padStart(3, '0')}`}
+                                onDelete={() => removePedido(pedido.id)} // Passa a função removePedido para o componente filho
                               />
                             </div>
                           )}
@@ -178,3 +192,4 @@ export default function Quadro() {
     </DragDropContext>
   )
 }
+

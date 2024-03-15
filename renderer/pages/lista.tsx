@@ -10,7 +10,6 @@ import { Card } from '../components/organisms/card'
 import { NavBar } from '../components/organisms/navbar'
 import { Section } from '../components/organisms/section'
 import { HeadingOne } from '../components/atoms/heading-one'
-import { SearchBar } from '../components/atoms/search-bar'
 import { View } from '../components/organisms/view'
 import { OrderItem } from '../components/molecules/order-item '
 import { CriarPedidoModal } from '../components/molecules/criar-pedidos-modal'
@@ -91,7 +90,6 @@ export default function Lista() {
       <div className="flex items-center justify-between">
         <HeadingOne>Lista de pedidos</HeadingOne>
         <div className="w-64">
-          <SearchBar />
         </div>
       </div>
       <div className="flex items-center justify-between my-8">
@@ -125,7 +123,7 @@ export default function Lista() {
             <div className="w-full">Código</div>
             <div className="w-full">Preço</div>
             <div className="w-full">Mesa</div>
-            <div className="w-full">Observação</div>
+            <div className="w-full">Ingredientes</div>
             <div className="h-7 w-[700px]"></div>
           </div>
 
