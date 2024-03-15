@@ -39,7 +39,7 @@ function CriarPedidoModal({ isOpen, onClose, title, pratos, atendentes }: CriarP
     data: new Date(),
     itens: [] as Item[],
     codigo: 0,
-    funcionario: '', // Alterado para string
+    funcionario: {},
     mesa: null,
     forma_pagamento: 'PIX',
     status_pedido: 'PENDENTE',
@@ -137,13 +137,13 @@ function CriarPedidoModal({ isOpen, onClose, title, pratos, atendentes }: CriarP
             onChange={(e) => {
               setPedido((prevPedido: any) => ({
                 ...prevPedido,
-                funcionario: e.target.value, // Alterado para pegar o valor do ID do atendente
+                funcionario: e.target.value,
               }))
             }}
           >
             <option value="">Selecione um atendente</option>
             {atendentes.map((atendente) => (
-              <option key={atendente.id} value={atendente.id}>{atendente.nome}</option> // Alterado para passar o ID
+              <option key={atendente.nome} value={atendente.nome}>{atendente.nome}</option>
             ))}
           </select>
         </div>
