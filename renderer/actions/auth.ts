@@ -15,9 +15,10 @@ async function authenticate(data: Login): Promise<void> {
       }
     })
     global.localStorage.setItem('token', response.data.token)
+    global.localStorage.setItem('token_reserve', response.data.token)
     global.localStorage.setItem('user', JSON.stringify({
-      nome: 'Administrador',
-      cargo: 'atendente',
+      nome: 'Usuário',
+      cargo: 'Garçom',
       email: data.email
     }))
     global.location.href = '/dashboard'

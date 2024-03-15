@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { IoMdDownload } from 'react-icons/io'
 import { FaPlusCircle } from 'react-icons/fa'
 import { Button } from '../components/atoms/button'
 import { View } from '../components/organisms/view'
@@ -65,15 +64,6 @@ export default function HomePage() {
       <NavBar />
       <div className="flex items-center justify-between">
         <HeadingOne>Dashboard</HeadingOne>
-        <div className="w-64">
-          <Button
-            variant="primary"
-            action={() => console.log('relatório gerado')}
-          >
-            Gerar relatório
-            <IoMdDownload size={22} />
-          </Button>
-        </div>
       </div>
       <Section>
         <Card>
